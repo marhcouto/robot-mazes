@@ -33,15 +33,14 @@ class Position:
     return not (self == __o)
 
   def move(self, direction):
-    match direction:
-      case Direction.UP:
-        return Position(self.row - 1, self.column)
-      case Direction.DOWN:
-        return Position(self.row + 1, self.column)
-      case Direction.LEFT:
-        return Position(self.row, self.column - 1)
-      case Direction.RIGHT:
-        return Position(self.__row, self.column + 1)
+    if direction == Direction.UP:
+      return Position(self.row - 1, self.column)
+    elif direction == Direction.DOWN:
+      return Position(self.row + 1, self.column)
+    elif direction == Direction.LEFT:
+      return Position(self.row, self.column - 1)
+    elif direction == Direction.RIGHT:
+      return Position(self.__row, self.column + 1)
 
 class Maze:
   def __init__(self, size, init_robot_pos, objective_pos, wall_list):
@@ -58,16 +57,15 @@ class Maze:
         self.__walls[wall[0]] = set([wall[1]])
 
   def can_move(self, orig, direction):
-    if (not self.wall_between(orig, orig.move(direction))):
-      match direction:
-        case Direction.LEFT if orig.column > 0:
-          return True
-        case Direction.RIGHT if orig.column < (self.__size - 1):
-          return True
-        case Direction.UP if orig.row > 0:
-          return True
-        case Direction.DOWN if orig.column < (self.__size - 1):
-          return True
+    if (not self.wall_between(orig, orig.move(direction))):      
+      if direction == Direction.LEFT and orig.column > 0:
+        return True
+      elif direction == Direction.RIGHT and orig.column < (self.__size - 1):
+        return True
+      elif direction == Direction.UP and orig.row > 0:
+        return True
+      elif direction == Direction.DOWN and orig.column < (self.__size - 1):
+        return True
     return False
   
   def possible_moves(self, orig):
