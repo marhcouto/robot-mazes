@@ -1,11 +1,15 @@
 from copy import deepcopy
 from enum import Enum
 
+
+
 class Direction(Enum):
   UP = 0,
   DOWN = 1,
   LEFT = 2,
   RIGHT = 3
+
+
 
 class Position:
   def __init__(self, row, column):
@@ -41,6 +45,8 @@ class Position:
       return Position(self.row, self.column - 1)
     elif direction == Direction.RIGHT:
       return Position(self.__row, self.column + 1)
+
+
 
 class Maze:
   def __init__(self, size, init_robot_pos, objective_pos, wall_list):
@@ -88,6 +94,8 @@ class Maze:
 
   def is_final(self):
     return self.__robot_pos == self.__objective_pos
+
+
 
 def simulate(maze, moves):
   robot_pos = maze.init_robot_pos
