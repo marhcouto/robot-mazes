@@ -60,14 +60,14 @@ class Maze:
                 self.__walls[wall[0]] = set([wall[1]])
 
     def can_move(self, orig, direction):
-        if (not self.wall_between(orig, orig.move(direction))):
+        if not self.wall_between(orig, orig.move(direction)):
             if direction == Direction.LEFT and orig.column > 0:
                 return True
             elif direction == Direction.RIGHT and orig.column < (self.__size - 1):
                 return True
             elif direction == Direction.UP and orig.row > 0:
                 return True
-            elif direction == Direction.DOWN and orig.column < (self.__size - 1):
+            elif direction == Direction.DOWN and orig.row < (self.__size - 1):
                 return True
         return False
 
@@ -103,18 +103,6 @@ def simulate(maze, moves):
                 if robot_pos.move(direction) == maze.final_robot_pos:
                     return True
                 robot_pos = robot_pos.move(direction)
-        return init_cycle_pos != robot_pos
-
-
-maze = Maze(
-    4,
-    Position(3, 0),
-    Position(0, 3),
-    [
-        (Position(2, 0), Position(2, 1)),
-        (Position(1, 1), Position(1, 2)),
-        (Position(0, 1), Position(0, 2)),
-        (Position(0, 3), Position(1, 3)),
-        (Position(1, 3), Position(2, 3))
-    ]
-)
+        if (init_cycle_pos == robot_pos):
+            break
+    return False
