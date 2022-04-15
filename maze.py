@@ -46,6 +46,7 @@ class Position:
 
 
 class Maze:
+
     def __init__(self, size, init_robot_pos, objective_pos, wall_list):
         self.__size = size
         self.__objective_pos = objective_pos
@@ -78,6 +79,20 @@ class Maze:
         return (orig in self.__walls and dest in self.__walls[orig]) or (
                     dest in self.__walls and orig in self.__walls[dest])
 
+    # Just for development purposes
+    def random_puzzle():
+        return Maze(
+        5,
+        Position(3, 0),
+        Position(0, 3),
+        [
+            (Position(2, 0), Position(2, 1)),
+            (Position(1, 1), Position(1, 2)),
+            (Position(0, 1), Position(0, 2)),
+            (Position(0, 3), Position(1, 3)),
+            (Position(1, 3), Position(2, 3))
+        ])
+
     @property
     def init_robot_pos(self):
         return self.__init_robot_pos
@@ -88,7 +103,7 @@ class Maze:
 
     @property
     def size(self):
-        return self.size
+        return self.__size
 
     def is_final(self):
         return self.__robot_pos == self.__objective_pos
