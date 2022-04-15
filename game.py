@@ -1,4 +1,5 @@
 import pygame
+import pygame_menu
 
 from maze import Maze
 
@@ -20,21 +21,17 @@ class MazeEdge:
 
 class EdgeFactory: 
 
-    def realWall():
+    def real_wall():
         return MazeEdge(4, (0, 0, 0))
 
-    def noWall():
+    def no_wall():
         return MazeEdge(1, (100, 100, 100))
 
 
 
 
-def game():
+def game(screen):
 
-    pygame.init()
-
-    screen = pygame.display.set_mode([800, 800])
-    pygame.display.set_caption('Robot Mazes')
 
     # Run until the user asks to quit
     running = True
@@ -50,7 +47,6 @@ def game():
 
         pygame.time.wait(100)
 
-    pygame.quit()
 
 
 
@@ -58,8 +54,8 @@ def game():
 def maze_drawer(maze, screen):
 
     square_width = 50
-    passage = EdgeFactory.noWall()
-    wall = EdgeFactory.realWall()
+    passage = EdgeFactory.no_wall()
+    wall = EdgeFactory.real_wall()
     top = 50
     screen_w, _ = pygame.display.get_surface().get_size()
     left = (screen_w - maze.size * square_width) / 2
@@ -86,11 +82,6 @@ def maze_drawer(maze, screen):
 
     # Maze frame
     pygame.draw.rect(screen, wall.color, pygame.Rect(left, top, square_width * maze.size, square_width * maze.size), wall.width)
+    
 
-
-
-
-
-if __name__ == '__main__':
-
-    game()
+    # Walls
