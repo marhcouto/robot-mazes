@@ -57,7 +57,7 @@ def maze_drawer(maze, screen):
     passage = EdgeFactory.no_wall()
     wall = EdgeFactory.real_wall()
     top = 50
-    screen_w, _ = pygame.display.get_surface().get_size()
+    screen_w, _ = screen.get_size()
     left = (screen_w - maze.size * square_width) / 2
     bottom = top + maze.size * square_width
     right = left + maze.size * square_width
