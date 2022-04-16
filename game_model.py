@@ -152,6 +152,12 @@ class GameModel:
             return direction
 
 
+    def pop_move(self):
+        if len(self.__moves) <= 0:
+            return None
+        return self.__moves.pop()
+
+
     @property
     def no_moves(self):
         return self.__no_moves

@@ -3,7 +3,7 @@ import pygame_menu
 
 from typing import Optional
 
-from game import GameContoller
+from game_controller import GameContoller
 from game_model import Maze
 
 WINDOW_SIZE = (1200, 760)
