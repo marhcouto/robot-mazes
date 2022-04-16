@@ -3,7 +3,7 @@ from heap import Heap
 
 from state import RobotState
 
-from maze import simulate, Direction
+from game_model import simulate, Direction
 
 
 def breadth_first_search(maze, no_moves):

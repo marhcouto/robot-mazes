@@ -1,4 +1,4 @@
-from maze import Direction
+from game_model import Direction
 
 class InvalidChangeException(Exception):
     pass

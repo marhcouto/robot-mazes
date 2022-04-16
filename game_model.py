@@ -9,30 +9,14 @@ class Direction(Enum):
     RIGHT = 3
 
 
+
+
 class Position:
+
     def __init__(self, row, column):
         self.__row = row
         self.__column = column
 
-    @property
-    def row(self):
-        return self.__row
-
-    @property
-    def column(self):
-        return self.__column
-
-    def __str__(self) -> str:
-        return "({0}, {1})".format(self.row, self.column)
-
-    def __hash__(self) -> int:
-        return (self.row, self.column).__hash__()
-
-    def __eq__(self, __o: object) -> bool:
-        return isinstance(__o, Position) and self.row == __o.row and self.column == __o.column
-
-    def __ne__(self, __o: object) -> bool:
-        return not (self == __o)
 
     def move(self, direction):
         if direction == Direction.UP:
@@ -43,6 +27,34 @@ class Position:
             return Position(self.row, self.column - 1)
         elif direction == Direction.RIGHT:
             return Position(self.__row, self.column + 1)
+
+
+    @property
+    def row(self):
+        return self.__row
+
+
+    @property
+    def column(self):
+        return self.__column
+
+
+    def __str__(self) -> str:
+        return "({0}, {1})".format(self.row, self.column)
+
+
+    def __hash__(self) -> int:
+        return (self.row, self.column).__hash__()
+
+
+    def __eq__(self, __o: object) -> bool:
+        return isinstance(__o, Position) and self.row == __o.row and self.column == __o.column
+
+
+    def __ne__(self, __o: object) -> bool:
+        return not (self == __o)
+
+
 
 
 class Maze:
@@ -60,6 +72,7 @@ class Maze:
             else:
                 self.__walls[wall[0]] = set([wall[1]])
 
+
     def can_move(self, orig, direction):
         if not self.wall_between(orig, orig.move(direction)):
             if direction == Direction.LEFT and orig.column > 0:
@@ -72,12 +85,15 @@ class Maze:
                 return True
         return False
 
+
     def possible_moves(self, orig):
         return [direction for direction in Direction if self.can_move(orig, direction)]
+
 
     def wall_between(self, orig, dest):
         return (orig in self.__walls and dest in self.__walls[orig]) or (
                     dest in self.__walls and orig in self.__walls[dest])
+
 
     # Just for development purposes
     def random_puzzle():
@@ -93,24 +109,63 @@ class Maze:
             (Position(1, 3), Position(2, 3))
         ])
 
+
+    def is_final(self):
+        return self.__robot_pos == self.__objective_pos
+
+
     @property
     def init_robot_pos(self):
         return self.__init_robot_pos
+
 
     @property
     def final_robot_pos(self):
         return self.__objective_pos
 
+
     @property
     def size(self):
         return self.__size
+
 
     @property
     def walls(self):
         return self.__walls
 
-    def is_final(self):
-        return self.__robot_pos == self.__objective_pos
+
+
+
+class GameModel:
+
+    def __init__(self, maze, no_moves):
+        self.__no_moves = no_moves
+        self.__maze = maze
+        self.__moves = []
+
+
+    def add_move(self, direction: Direction):
+        if len(self.__moves) >= self.__no_moves:
+            return None
+        else:
+            self.__moves.append(direction)
+            return direction
+
+
+    @property
+    def no_moves(self):
+        return self.__no_moves
+    
+
+    @property
+    def moves(self):
+        return self.__moves
+
+
+    @property
+    def maze(self):
+        return self.__maze
+
 
 
 def simulate(maze, moves):
