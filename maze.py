@@ -105,6 +105,10 @@ class Maze:
     def size(self):
         return self.__size
 
+    @property
+    def walls(self):
+        return self.__walls
+
     def is_final(self):
         return self.__robot_pos == self.__objective_pos
 
