@@ -3,57 +3,66 @@ import pygame
 from game_model import Maze, Position, Direction, GameModel
 
 
+class View:
+    pass
 
-class MazeView:
+
+class MazeView(View):
 
     SQUARE_WIDTH = 50
+    TOP = 50
 
-
-    def __init__(self, surface: pygame.Surface):
+    def __init__(self, surface: pygame.Surface, maze: Maze):
         self.__surface = surface
         self.__robot = pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
+        self.__maze = maze
+        self.__left = MazeView.left(surface, maze)
+
+    def left(surface: pygame.Surface, maze: Maze):
+        screen_w, _ = surface.get_size()
+        return (screen_w - maze.size * MazeView.SQUARE_WIDTH) / 2
+        
+    def row_column_to_x_y(self, position: Position):
+        return (position.column * MazeView.SQUARE_WIDTH + self.__left, position.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
         
 
-    def draw(self, maze):
+    def draw(self):
 
         passage = EdgeFactory.no_wall()
         wall = EdgeFactory.real_wall()
-        top = 50
-        screen_w, _ = self.__surface.get_size()
-        left = (screen_w - maze.size * MazeView.SQUARE_WIDTH) / 2
 
         # Starting house
-        (initial_x, initial_y) = (maze.init_robot_pos.column * MazeView.SQUARE_WIDTH + left, maze.init_robot_pos.row * MazeView.SQUARE_WIDTH + top)
+        (initial_x, initial_y) = (self.__maze.init_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self.__maze.init_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
         pygame.draw.rect(self.__surface, (50, 0, 150), pygame.Rect(initial_x, initial_y, MazeView.SQUARE_WIDTH, MazeView.SQUARE_WIDTH))
 
         # Ending house
-        (final_x, final_y) = (maze.final_robot_pos.column * MazeView.SQUARE_WIDTH + left, maze.final_robot_pos.row * MazeView.SQUARE_WIDTH + top)
+        (final_x, final_y) = (self.__maze.final_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self.__maze.final_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
         pygame.draw.rect(self.__surface, (50, 150, 150), pygame.Rect(final_x, final_y, MazeView.SQUARE_WIDTH, MazeView.SQUARE_WIDTH))
 
         # Horizontal Lines
-        for i in range(maze.size):
-            lines_y = i * MazeView.SQUARE_WIDTH + top
-            pygame.draw.line(self.__surface, passage.color, (left, lines_y), (left + MazeView.SQUARE_WIDTH * maze.size, lines_y), passage.width)
+        for i in range(self.__maze.size):
+            lines_y = i * MazeView.SQUARE_WIDTH + MazeView.TOP
+            pygame.draw.line(self.__surface, passage.color, (self.__left, lines_y), (self.__left + MazeView.SQUARE_WIDTH * self.__maze.size, lines_y), passage.width)
 
         # Vertical Lines
-        for i in range(maze.size):
-            line_x = i * MazeView.SQUARE_WIDTH + left
-            pygame.draw.line(self.__surface, passage.color, (line_x, top), (line_x, top + MazeView.SQUARE_WIDTH * maze.size), passage.width)
+        for i in range(self.__maze.size):
+            line_x = i * MazeView.SQUARE_WIDTH + self.__left
+            pygame.draw.line(self.__surface, passage.color, (line_x, MazeView.TOP), (line_x, MazeView.TOP + MazeView.SQUARE_WIDTH * self.__maze.size), passage.width)
 
         # Maze frame
-        pygame.draw.rect(self.__surface, wall.color, pygame.Rect(left, top, MazeView.SQUARE_WIDTH * maze.size, MazeView.SQUARE_WIDTH * maze.size), wall.width)
+        pygame.draw.rect(self.__surface, wall.color, pygame.Rect(self.__left, MazeView.TOP, MazeView.SQUARE_WIDTH * self.__maze.size, MazeView.SQUARE_WIDTH * self.__maze.size), wall.width)
         
         # Walls
-        for position1, positions in maze.walls.items():
+        for position1, positions in self.__maze.walls.items():
             for position2 in positions:
                 # Horizontal wall
                 if position1.column == position2.column:    
-                    pygame.draw.line(self.__surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + left, (maze.size - position2.row) * MazeView.SQUARE_WIDTH + top), 
-                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + left, (maze.size - position2.row) * MazeView.SQUARE_WIDTH + top), wall.width)
+                    pygame.draw.line(self.__surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + self.__left, (self.__maze.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
+                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + self.__left, (self.__maze.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
                 # Vertical wall
                 else: 
-                    pygame.draw.line(self.__surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + left, (maze.size - position1.row) * MazeView.SQUARE_WIDTH + top), 
-                        (position2.column * MazeView.SQUARE_WIDTH + left, (maze.size - position1.row - 1) * MazeView.SQUARE_WIDTH + top), wall.width)
+                    pygame.draw.line(self.__surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.__maze.size - position1.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
+                        (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.__maze.size - position1.row - 1) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
         
         # Robot
         self.__surface.blit(self.__robot, (initial_x, initial_y))
@@ -65,6 +74,10 @@ class MazeView:
         for _ in range(MazeView.SQUARE_WIDTH):
             current_pos = current_pos.move(direction)
             # self.draw_robot(self, current_pos)
+
+    def draw_robot_moving(self, position: Position):
+        x, y = self.row_column_to_x_y(position)
+        self.__surface.blit(self.__robot, (x, y))
     
 
     @property
@@ -101,13 +114,14 @@ class EdgeFactory:
 
 
 
-class MovesView:
+class MovesView(View):
 
     ARROW_WIDTH = 75
 
-    def __init__(self, surface: pygame.Surface):
+    def __init__(self, surface: pygame.Surface, moves: list(Direction)):
         self.__surface = surface
         self.__load_images()
+        self.__moves = moves
 
 
     def __load_images(self):
@@ -117,12 +131,12 @@ class MovesView:
         self.__right = pygame.transform.scale(pygame.image.load('./assets/img/arrow_right.png'), (75, 75))
 
 
-    def draw(self, moves):
+    def draw(self):
         
         x = 10
         y = 10
 
-        for move in moves:
+        for move in self.__moves:
             self.__draw_move(move, (x, y))
             x += self.ARROW_WIDTH
 
@@ -142,15 +156,14 @@ class MovesView:
 
 
 
-class GameView:
+class GUI:
 
     def __init__(self, surface: pygame.Surface):
         self.__surface = surface
-        self.__maze_view = MazeView(surface)
-        self.__moves_view = MovesView(surface)
 
 
-    def draw(self, game_model: GameModel):
+    def update(self, game_model: GameModel):
         self.__surface.fill((255, 255, 255))
-        self.__maze_view.draw(game_model.maze)
-        self.__moves_view.draw(game_model.moves)
+        MazeView(self.__surface, game_model.maze).draw()
+        MovesView(self.__surface, game_model.moves).draw()
+        pygame.display.flip()

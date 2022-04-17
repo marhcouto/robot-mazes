@@ -3,7 +3,7 @@ import pygame_menu
 
 from typing import Optional
 
-from game_controller import GameContoller
+from game_controller import GameController
 from game_model import Maze
 
 WINDOW_SIZE = (1200, 760)
@@ -66,7 +66,7 @@ def main():
     )
     main_menu.add.button('Choose Map', maze_selector_menu)
     main_menu.add.button('Quit', pygame_menu.events.EXIT)
-    main_menu.add.button('Play', lambda: GameContoller(surface).run())
+    main_menu.add.button('Play', lambda: GameController(surface).run())
     
     running = True
     while running:

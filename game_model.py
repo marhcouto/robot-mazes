@@ -10,7 +10,6 @@ class Direction(Enum):
 
 
 
-
 class Position:
 
     def __init__(self, row, column):
@@ -60,9 +59,11 @@ class Position:
 class Maze:
 
     def __init__(self, size, init_robot_pos, objective_pos, wall_list):
+        super().__init__()
         self.__size = size
         self.__objective_pos = objective_pos
         self.__init_robot_pos = init_robot_pos
+        self.__current_robot_pos = init_robot_pos
         self.__walls = {}
         for wall in wall_list:
             if wall[0] in self.__walls:
@@ -93,6 +94,13 @@ class Maze:
     def wall_between(self, orig, dest):
         return (orig in self.__walls and dest in self.__walls[orig]) or (
                     dest in self.__walls and orig in self.__walls[dest])
+
+
+    def move_robot(self, dest):
+        if not self.can_move(self.__current_robot_pos, dest):
+            return self.__current_robot_pos
+        self.__current_robot_pos = dest
+        return dest
 
 
     # Just for development purposes
@@ -132,6 +140,11 @@ class Maze:
     @property
     def walls(self):
         return self.__walls
+
+    
+    @property
+    def current_robot_pos(self):
+        return self.__current_robot_pos
 
 
 
