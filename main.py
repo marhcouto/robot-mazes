@@ -1,27 +1,32 @@
 import pygame
 import pygame_menu
+from menu.maze_selector_menu import MazeSelectorMenu
 
 from typing import Optional
 
-from game import game, maze_drawer
-from maze import Maze
+from game import game
 
 WINDOW_SIZE = (1200, 760)
 
-main_menu: Optional['pygame_menu.Menu'] = None
 surface: Optional['pygame'] = None
-
-
-def change_maze_surface(_, maze):
-    maze_drawer(maze[0], maze[1])
-
 
 def choose_map():
     pass
 
+def main_menu_factory():
+    main_menu = pygame_menu.Menu(
+        height=WINDOW_SIZE[1],
+        width=WINDOW_SIZE[0],
+        title='Robot Mazes',
+        theme=pygame_menu.themes.THEME_DARK
+    )
+    main_menu.add.button('Choose Map', MazeSelectorMenu(WINDOW_SIZE).maze_selector_menu)
+    main_menu.add.button('Quit', pygame_menu.events.EXIT)
+    main_menu.add.button('Play', lambda: game(surface))
+    return main_menu
+
 
 def main():
-    global main_menu
     global surface
 
     pygame.init()
@@ -29,45 +34,8 @@ def main():
 
     surface = pygame.display.set_mode(WINDOW_SIZE)
 
-    maze_selector_menu = pygame_menu.Menu(
-        height=WINDOW_SIZE[1],
-        width=WINDOW_SIZE[0],
-        title='Choose a maze',
-        theme=pygame_menu.themes.THEME_DARK
-    )
-    maze_surface = pygame.Surface((550, 550))
-    maze_surface.fill((255, 255, 255))
-    maze_selector_menu.add.surface(maze_surface)
-    maze_selector_menu.add.vertical_margin(25)
-    items = [
-        ('Default', (Maze.random_puzzle(), maze_surface)),
-        ('Black', (Maze.random_puzzle(), maze_surface)),
-        ('Blue', (Maze.random_puzzle(), maze_surface))
-    ]
-    maze_selector_menu.add.selector(
-        title='Maze:\t',
-        items=items,
-        onchange=change_maze_surface
-    )
-    maze_selector_menu.add.button('Custom Maze', None)
+    main_menu = main_menu_factory()
 
-    custom_maze_creator = pygame_menu.Menu(
-        height=WINDOW_SIZE[1],
-        width=WINDOW_SIZE[0],
-        title='Custom Maze',
-        theme=pygame_menu.themes.THEME_DARK
-    )
-
-    main_menu = pygame_menu.Menu(
-        height = WINDOW_SIZE[1],
-        width = WINDOW_SIZE[0],
-        title = 'Robot Mazes',
-        theme = pygame_menu.themes.THEME_DARK
-    )
-    main_menu.add.button('Choose Map', maze_selector_menu)
-    main_menu.add.button('Quit', pygame_menu.events.EXIT)
-    main_menu.add.button('Play', lambda: game(surface))
-    
     running = True
     while running:
         events = pygame.event.get()

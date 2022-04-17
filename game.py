@@ -31,8 +31,6 @@ class EdgeFactory:
 
 
 def game(screen):
-
-
     # Run until the user asks to quit
     running = True
     while running:
@@ -48,11 +46,7 @@ def game(screen):
         pygame.time.wait(100)
 
 
-
-
-
 def maze_drawer(maze, screen):
-
     square_width = 50
     passage = EdgeFactory.no_wall()
     wall = EdgeFactory.real_wall()
