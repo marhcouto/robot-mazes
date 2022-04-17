@@ -15,7 +15,7 @@ class MazeCreationMenu:
             columns=2
         )
         self.__selected_algorithm = selected_algorithm
-        self.__maze_render_surface = pygame.Surface((550, 550))
+        self.__reset_maze_surface()
         self.__internal_state = Maze(0, None, None, [])
         self.__current_state_widgets = self.__add_choice_widgets()
 
@@ -29,12 +29,15 @@ class MazeCreationMenu:
             self.__internal_state = Maze(int(new_size), None, None, [])
 
     def __add_choice_widgets(self):
+        maze_size = self.maze_creation_menu.add.text_input(
+            'Size: ',
+            maxchar=1,
+            onreturn=self.__update_maze_size
+        )
+        if self.__internal_state.size:
+            maze_size.set_value(str(self.__internal_state.size))
         return [
-            self.maze_creation_menu.add.text_input(
-                'Size: ',
-                maxchar=1,
-                onreturn=self.__update_maze_size
-            ),
+            maze_size,
             self.maze_creation_menu.add.button('Set Initial Position', lambda: self.__change_state(
                 lambda: self.__add_cell_input(
                     'Set Initial Position',
@@ -66,7 +69,11 @@ class MazeCreationMenu:
     def __internal_state_valid(self):
         return self.__internal_state.init_robot_pos and self.__internal_state.final_robot_pos and self.__internal_state.size != 0
 
+    def __reset_maze_surface(self):
+        self.__maze_render_surface = pygame.Surface((550, 550))
+
     def __change_state(self, new_state_callback):
+        self.__reset_maze_surface()
         self.__remove_current_state_widgets()
         self.__current_state_widgets = new_state_callback()
         if self.__internal_state_valid:
@@ -102,6 +109,7 @@ class MazeCreationMenu:
         ]
 
     def __commit_cell_input(self, menu_data, action_callback):
+        self.__reset_maze_surface()
         self.__remove_current_state_widgets()
         action_callback(menu_data)
         self.__current_state_widgets = self.__add_choice_widgets()
