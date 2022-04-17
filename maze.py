@@ -53,12 +53,7 @@ class Maze:
         self.__init_robot_pos = init_robot_pos
         self.__walls = {}
         for wall in wall_list:
-            if wall[0] in self.__walls:
-                self.__walls[wall[0]].add(wall[1])
-            elif wall[1] in self.__walls:
-                self.__walls[wall[1]].add(wall[0])
-            else:
-                self.__walls[wall[0]] = set([wall[1]])
+            self.add_wall(wall)
 
     def can_move(self, orig, direction):
         if not self.wall_between(orig, orig.move(direction)):
@@ -93,13 +88,35 @@ class Maze:
             (Position(1, 3), Position(2, 3))
         ])
 
+    def add_wall(self, wall):
+        if wall[0] in self.__walls:
+            self.__walls[wall[0]].add(wall[1])
+        elif wall[1] in self.__walls:
+            self.__walls[wall[1]].add(wall[0])
+        else:
+            self.__walls[wall[0]] = set([wall[1]])
+
+    def remove_wall(self, wall):
+        if wall[0] in self.__walls:
+            self.__walls[wall[0]].remove(wall[1])
+        elif wall[1] in self.__walls:
+            self.__walls[wall[1]].remove(wall[0])
+
     @property
     def init_robot_pos(self):
         return self.__init_robot_pos
 
+    @init_robot_pos.setter
+    def init_robot_pos(self, new_init_robot_pos):
+        self.__init_robot_pos = Position(new_init_robot_pos[0], new_init_robot_pos[0])
+
     @property
     def final_robot_pos(self):
         return self.__objective_pos
+
+    @final_robot_pos.setter
+    def final_robot_pos(self, new_final_pos):
+        self.__objective_pos = Position(new_final_pos[0], new_final_pos[1])
 
     @property
     def size(self):

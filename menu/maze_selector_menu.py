@@ -44,7 +44,7 @@ class MazeSelectorMenu:
             items=self.mazes,
             onchange=lambda _, maze: self.__change_maze(maze)
         )
-        maze_selector_menu.add.dropselect(
+        self.__algorithm = maze_selector_menu.add.dropselect(
             title='Algorithm: ',
             items=self.algorithms,
             onchange=lambda _, algorithm: self.__change_algorithm(algorithm)
@@ -60,7 +60,7 @@ class MazeSelectorMenu:
 
     @property
     def __next_menu(self) -> pygame_menu.Menu:
-        return MazeCreationMenu(self.__window_size).maze_creation_menu
+        return MazeCreationMenu(self.__window_size, self.__algorithm).maze_creation_menu
 
     @property
     def mazes(self):
