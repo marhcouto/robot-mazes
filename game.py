@@ -19,8 +19,7 @@ class MazeEdge:
 
 
 
-class EdgeFactory: 
-
+class EdgeFactory:
     def real_wall():
         return MazeEdge(4, (0, 0, 0))
 

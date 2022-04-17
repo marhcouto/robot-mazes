@@ -1,5 +1,7 @@
 import pygame
 from menu.main_menu import MainMenu
+from maze import Maze, Position
+import maze_solver.algorithms
 
 from typing import Optional
 
@@ -28,7 +30,6 @@ def main():
 
         if main_menu.is_enabled():
             main_menu.mainloop(surface)
-
 
 
 if __name__ == '__main__':

@@ -14,3 +14,6 @@ class MazeSolver:
 
     def add_n_moves(self, n_moves):
         self.__n_moves = n_moves
+
+    def solve_maze(self):
+        return self.__algorithm(self.__maze, self.__n_moves)

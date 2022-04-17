@@ -77,7 +77,7 @@ class Maze:
     # Just for development purposes
     def random_puzzle():
         return Maze(
-        5,
+        4,
         Position(3, 0),
         Position(0, 3),
         [
@@ -135,6 +135,6 @@ def simulate(maze, moves):
                 if robot_pos.move(direction) == maze.final_robot_pos:
                     return True
                 robot_pos = robot_pos.move(direction)
-        if (init_cycle_pos == robot_pos):
+        if init_cycle_pos == robot_pos:
             break
     return False

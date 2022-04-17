@@ -42,6 +42,19 @@ class RobotState:
                     except InvalidChangeException:
                         print("Preconditions not met! Unexpected error!")
 
+    @property
+    def parent(self):
+        return self.__parent
+
+    def build_state_history(self):
+        state_list = [self]
+        cur_state = self.parent
+        while cur_state:
+            state_list.append(cur_state)
+            cur_state = cur_state.parent
+        state_list.reverse()
+        return state_list
+
     def __hash__(self):
         return hash(self.__tuple_of_moves)
 
