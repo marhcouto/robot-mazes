@@ -12,18 +12,25 @@ class GameController:
 
     def __init__(self, surface):
         self.__game_model: GameModel = GameModel(Maze.random_puzzle(), 5)
-        self.__surface = surface
+        self.__game_view: GameView = GameView(surface, self.__game_model)
 
 
     def run(self):
         running = True
-
+        i = 0
         while running:
+            print(i)
+            i += 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
 
-            GameView(self.__surface).draw(self.__game_model)
+            # Draw
+            self.__game_view.draw_static()
+            self.__game_view.draw_dynamic(self.__game_model.maze.init_robot_pos)
+            pygame.display.flip()
+
+
             pygame.event.wait()
             keys = pygame.key.get_pressed()
 
@@ -37,6 +44,10 @@ class GameController:
                 self.__game_model.add_move(Direction.RIGHT)
             elif keys[pygame.K_BACKSPACE]:
                 self.__game_model.pop_move()
+            else:
+                continue
+            
+            self.__game_view.update(self.__game_model)
                
 
         

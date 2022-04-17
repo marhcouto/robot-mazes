@@ -151,9 +151,9 @@ class Maze:
 
 class GameModel:
 
-    def __init__(self, maze, no_moves):
-        self.__no_moves = no_moves
-        self.__maze = maze
+    def __init__(self, maze: Maze, no_moves: int):
+        self.__no_moves: int = no_moves
+        self.__maze: Maze = maze
         self.__moves = []
 
 
