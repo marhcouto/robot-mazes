@@ -1,8 +1,9 @@
 import pygame
 
 
-from game_model import Direction, Maze, GameModel
-from game_view import GUI
+from view.game_view import GameView
+from model.game_model import Direction, Maze, GameModel
+
 
 
 
@@ -10,8 +11,8 @@ from game_view import GUI
 class GameController:
 
     def __init__(self, surface):
-        self.__game_model = GameModel(Maze.random_puzzle(), 5)
-        self.__game_view = GUI(surface)
+        self.__game_model: GameModel = GameModel(Maze.random_puzzle(), 5)
+        self.__surface = surface
 
 
     def run(self):
@@ -22,7 +23,7 @@ class GameController:
                 if event.type == pygame.QUIT:
                     quit()
 
-            self.__game_view.update(self.__game_model)
+            GameView(self.__surface).draw(self.__game_model)
             pygame.event.wait()
             keys = pygame.key.get_pressed()
 
