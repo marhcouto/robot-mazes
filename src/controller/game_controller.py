@@ -1,4 +1,5 @@
 import pygame
+from view.animator import RobotAnimator
 
 
 from view.game_view import GameView
@@ -13,14 +14,14 @@ class GameController:
     def __init__(self, surface):
         self.__game_model: GameModel = GameModel(Maze.random_puzzle(), 5)
         self.__game_view: GameView = GameView(surface, self.__game_model)
+        self.__robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
 
 
     def run(self):
         running = True
-        i = 0
+
         while running:
-            print(i)
-            i += 1
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
@@ -44,6 +45,8 @@ class GameController:
                 self.__game_model.add_move(Direction.RIGHT)
             elif keys[pygame.K_BACKSPACE]:
                 self.__game_model.pop_move()
+            elif keys[pygame.K_RETURN]:
+                self.__game_model.simulate(self.__robot_animator)
             else:
                 continue
             

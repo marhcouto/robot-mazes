@@ -8,14 +8,14 @@ class View:
 
     def __init__(self, surface: pygame.Surface, model = None):
         self._surface = surface
-        self._model = model
+        self.model = model
         self._build()
 
     def _build(self):
         pass
 
     def update(self, model):
-        self._model = model
+        self.model = model
         self._build()
 
     def draw_static(self):
@@ -34,8 +34,8 @@ class MazeView(View):
     TOP = 50
 
 
-    def row_column_to_x_y(self, surface: pygame.Surface, position: Position, maze: Maze):
-        return (position.column * MazeView.SQUARE_WIDTH + MazeView.left(surface, maze), position.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
+    def row_column_to_x_y(self, position: Position):
+        return (position.column * MazeView.SQUARE_WIDTH + MazeView.left(self._surface, self.model), position.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
 
 
 
@@ -51,8 +51,8 @@ class MazeView(View):
 
 
     def _build(self):
-        self.__robot = MazeView.load_robot()
-        self.__left = MazeView.left(self._surface, self._model)
+        self.robot = MazeView.load_robot()
+        self.__left = MazeView.left(self._surface, self.model)
 
 
 
@@ -68,73 +68,45 @@ class MazeView(View):
         wall: MazeEdge = EdgeFactory.real_wall()
 
         # Starting house
-        (initial_x, initial_y) = (self._model.init_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self._model.init_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
+        (initial_x, initial_y) = (self.model.init_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self.model.init_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
         pygame.draw.rect(self._surface, (50, 0, 150), pygame.Rect(initial_x, initial_y, MazeView.SQUARE_WIDTH, MazeView.SQUARE_WIDTH))
 
         # Ending house
-        (final_x, final_y) = (self._model.final_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self._model.final_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
+        (final_x, final_y) = (self.model.final_robot_pos.column * MazeView.SQUARE_WIDTH + self.__left, self.model.final_robot_pos.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
         pygame.draw.rect(self._surface, (50, 150, 150), pygame.Rect(final_x, final_y, MazeView.SQUARE_WIDTH, MazeView.SQUARE_WIDTH))
 
         # Horizontal Lines
-        for i in range(self._model.size):
+        for i in range(self.model.size):
             lines_y = i * MazeView.SQUARE_WIDTH + MazeView.TOP
-            pygame.draw.line(self._surface, passage.color, (self.__left, lines_y), (self.__left + MazeView.SQUARE_WIDTH * self._model.size, lines_y), passage.width)
+            pygame.draw.line(self._surface, passage.color, (self.__left, lines_y), (self.__left + MazeView.SQUARE_WIDTH * self.model.size, lines_y), passage.width)
 
         # Vertical Lines
-        for i in range(self._model.size):
+        for i in range(self.model.size):
             line_x = i * MazeView.SQUARE_WIDTH + self.__left
-            pygame.draw.line(self._surface, passage.color, (line_x, MazeView.TOP), (line_x, MazeView.TOP + MazeView.SQUARE_WIDTH * self._model.size), passage.width)
+            pygame.draw.line(self._surface, passage.color, (line_x, MazeView.TOP), (line_x, MazeView.TOP + MazeView.SQUARE_WIDTH * self.model.size), passage.width)
 
         # Maze frame
-        pygame.draw.rect(self._surface, wall.color, pygame.Rect(self.__left, MazeView.TOP, MazeView.SQUARE_WIDTH * self._model.size, MazeView.SQUARE_WIDTH * self._model.size), wall.width)
+        pygame.draw.rect(self._surface, wall.color, pygame.Rect(self.__left, MazeView.TOP, MazeView.SQUARE_WIDTH * self.model.size, MazeView.SQUARE_WIDTH * self.model.size), wall.width)
         
         # Walls
-        for position1, positions in self._model.walls.items():
+        for position1, positions in self.model.walls.items():
             for position2 in positions:
                 # Horizontal wall
                 if position1.column == position2.column:    
-                    pygame.draw.line(self._surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + self.__left, (self._model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
-                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + self.__left, (self._model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
+                    pygame.draw.line(self._surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
+                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
                 # Vertical wall
                 else: 
-                    pygame.draw.line(self._surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self._model.size - position1.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
-                        (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self._model.size - position1.row - 1) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
-
-        return self
-
-
-
-
-    def draw_robot_moving(self, robot_from: Position, direction: Direction):
-        current_pos: Position = robot_from
-
-        for _ in range(MazeView.SQUARE_WIDTH):
-            current_pos = current_pos.move(direction)
-            # self.draw_robot(self, current_pos)
-
-
+                    pygame.draw.line(self._surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
+                        (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row - 1) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
 
 
     def draw_dynamic(self, position: Position):
-        self._surface.blit(self.__robot, self.row_column_to_x_y(self._surface, position, self._model))
+        self._surface.blit(self.robot, self.row_column_to_x_y(position))
 
 
 
 
-# class RobotView(View):
-
-#     def __init__(self, surface: pygame.Surface):
-#         super().__init__(surface)
-
-#     def _build(self):
-#         self,__robot = self.load_robot()
-
-#     def load_robot():
-#         return pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
-        
-
-#     def draw(self, position: Position):
-#         self.surface.blit(self.__robot, MazeView.row_column_to_x_y(position))
 
 
 
@@ -162,11 +134,9 @@ class MovesView(View):
         x = 10
         y = 10
 
-        for move in self._model:
+        for move in self.model:
             self.__draw_move(move, (x, y))
             x += self.ARROW_WIDTH
-
-        return self
 
     
     def __draw_move(self, move: Direction, position: tuple):
@@ -190,15 +160,15 @@ class GameView(View):
         
     
     def _build(self):
-        self.__maze_view = MazeView(self._surface, self._model.maze)
-        self.__moves_view = MovesView(self._surface, self._model.moves)
+        self.maze_view = MazeView(self._surface, self.model.maze)
+        self.moves_view = MovesView(self._surface, self.model.moves)
 
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))
-        self.__maze_view.draw_static()
-        self.__moves_view.draw_static()
+        self.maze_view.draw_static()
+        self.moves_view.draw_static()
 
 
     def draw_dynamic(self, position: Position):
-        self.__maze_view.draw_dynamic(position)
+        self.maze_view.draw_dynamic(position)
