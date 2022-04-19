@@ -3,8 +3,8 @@ import pygame_menu
 
 from typing import Optional
 
-from game import game, maze_drawer
-from maze import Maze
+from controller.game_controller import GameController
+from model.game_model import Maze
 
 WINDOW_SIZE = (1200, 760)
 
@@ -13,8 +13,8 @@ surface: Optional['pygame'] = None
 
 
 def change_maze_surface(_, maze):
-    maze_drawer(maze[0], maze[1])
-
+    #maze_drawer(maze[0], maze[1])
+    pass
 
 def choose_map():
     pass
@@ -66,7 +66,7 @@ def main():
     )
     main_menu.add.button('Choose Map', maze_selector_menu)
     main_menu.add.button('Quit', pygame_menu.events.EXIT)
-    main_menu.add.button('Play', lambda: game(surface))
+    main_menu.add.button('Play', lambda: GameController(surface).run())
     
     running = True
     while running:

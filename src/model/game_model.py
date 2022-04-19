@@ -9,30 +9,13 @@ class Direction(Enum):
     RIGHT = 3
 
 
+
 class Position:
+
     def __init__(self, row, column):
         self.__row = row
         self.__column = column
 
-    @property
-    def row(self):
-        return self.__row
-
-    @property
-    def column(self):
-        return self.__column
-
-    def __str__(self) -> str:
-        return "({0}, {1})".format(self.row, self.column)
-
-    def __hash__(self) -> int:
-        return (self.row, self.column).__hash__()
-
-    def __eq__(self, __o: object) -> bool:
-        return isinstance(__o, Position) and self.row == __o.row and self.column == __o.column
-
-    def __ne__(self, __o: object) -> bool:
-        return not (self == __o)
 
     def move(self, direction):
         if direction == Direction.UP:
@@ -45,12 +28,42 @@ class Position:
             return Position(self.__row, self.column + 1)
 
 
+    @property
+    def row(self):
+        return self.__row
+
+
+    @property
+    def column(self):
+        return self.__column
+
+
+    def __str__(self) -> str:
+        return "({0}, {1})".format(self.row, self.column)
+
+
+    def __hash__(self) -> int:
+        return (self.row, self.column).__hash__()
+
+
+    def __eq__(self, __o: object) -> bool:
+        return isinstance(__o, Position) and self.row == __o.row and self.column == __o.column
+
+
+    def __ne__(self, __o: object) -> bool:
+        return not (self == __o)
+
+
+
+
 class Maze:
 
     def __init__(self, size, init_robot_pos, objective_pos, wall_list):
+        super().__init__()
         self.__size = size
         self.__objective_pos = objective_pos
         self.__init_robot_pos = init_robot_pos
+        self.__current_robot_pos = init_robot_pos
         self.__walls = {}
         for wall in wall_list:
             if wall[0] in self.__walls:
@@ -59,6 +72,7 @@ class Maze:
                 self.__walls[wall[1]].add(wall[0])
             else:
                 self.__walls[wall[0]] = set([wall[1]])
+
 
     def can_move(self, orig, direction):
         if not self.wall_between(orig, orig.move(direction)):
@@ -72,12 +86,22 @@ class Maze:
                 return True
         return False
 
+
     def possible_moves(self, orig):
         return [direction for direction in Direction if self.can_move(orig, direction)]
+
 
     def wall_between(self, orig, dest):
         return (orig in self.__walls and dest in self.__walls[orig]) or (
                     dest in self.__walls and orig in self.__walls[dest])
+
+
+    def move_robot(self, dest):
+        if not self.can_move(self.__current_robot_pos, dest):
+            return self.__current_robot_pos
+        self.__current_robot_pos = dest
+        return dest
+
 
     # Just for development purposes
     def random_puzzle():
@@ -93,20 +117,90 @@ class Maze:
             (Position(1, 3), Position(2, 3))
         ])
 
+
+    def is_final(self):
+        return self.__robot_pos == self.__objective_pos
+
+
     @property
     def init_robot_pos(self):
         return self.__init_robot_pos
+
 
     @property
     def final_robot_pos(self):
         return self.__objective_pos
 
+
     @property
     def size(self):
         return self.__size
 
-    def is_final(self):
-        return self.__robot_pos == self.__objective_pos
+
+    @property
+    def walls(self):
+        return self.__walls
+
+    
+    @property
+    def current_robot_pos(self):
+        return self.__current_robot_pos
+
+
+
+
+class GameModel:
+
+    def __init__(self, maze: Maze, no_moves: int):
+        self.__no_moves: int = no_moves
+        self.__maze: Maze = maze
+        self.__moves = []
+
+
+    def simulate(self, animator):
+        robot_pos = self.__maze.init_robot_pos
+        while True:
+            init_cycle_pos = deepcopy(robot_pos)
+            for direction in self.__moves:
+                if self.__maze.can_move(robot_pos, direction):
+                    animator.animate(robot_pos, direction)
+                    if robot_pos.move(direction) == self.__maze.final_robot_pos:
+                        return True
+                    robot_pos = robot_pos.move(direction)
+            if (init_cycle_pos == robot_pos):
+                break
+        return False
+
+
+
+    def add_move(self, direction: Direction):
+        if len(self.__moves) >= self.__no_moves:
+            return None
+        else:
+            self.__moves.append(direction)
+            return direction
+
+
+    def pop_move(self):
+        if len(self.__moves) <= 0:
+            return None
+        return self.__moves.pop()
+
+
+    @property
+    def no_moves(self):
+        return self.__no_moves
+    
+
+    @property
+    def moves(self):
+        return self.__moves
+
+
+    @property
+    def maze(self):
+        return self.__maze
+
 
 
 def simulate(maze, moves):
