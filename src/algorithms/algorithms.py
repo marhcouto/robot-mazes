@@ -1,16 +1,12 @@
 from queue import Queue, LifoQueue
-from heap import Heap
+from src.algorithms.heap import Heap
+from src.model.game_model import GameModel
 
-from state import RobotState
-
-from model.game_model import simulate, Direction
-
-
-def breadth_first_search(maze, no_moves):
+def breadth_first_search(game_state):
     q = Queue()
     s = set()
 
-    starting_state = RobotState.initial_state(no_moves)
+    starting_state = GameModel()
 
     q.put(starting_state)
     s.add(starting_state)
@@ -33,11 +29,11 @@ def breadth_first_search(maze, no_moves):
     return None
 
 
-def depth_first_search(maze, no_moves):
+def depth_first_search(game_state):
     q = LifoQueue()
     s = set()
 
-    starting_state = RobotState.initial_state(no_moves)
+    starting_state = RobotState.initial_state(game_state.o_moves)
 
     q.put(starting_state)
     s.add(starting_state)
@@ -60,7 +56,7 @@ def depth_first_search(maze, no_moves):
     return None
 
 
-def iterative_deepening_search(maze, no_moves):
+def iterative_deepening_search(game_state):
     depth = 0
     starting_state = RobotState.initial_state(no_moves)
     while True:
@@ -85,7 +81,7 @@ def dls(maze, node, depth):
     return None
 
 
-def greedy_search(maze, no_moves, heuristic):
+def greedy_search(game_model, heuristic):
     visited_states = set()
     state_queue = Heap(heuristic)
     state_queue.insert(RobotState.initial_state(no_moves))
@@ -100,7 +96,7 @@ def greedy_search(maze, no_moves, heuristic):
                 state_queue.insert(node)
 
 
-def a_star_search(maze, no_moves, heuristic):
+def a_star_search(game_model, heuristic):
     visited_nodes = {}
     node_queue = Heap(heuristic)
     node_queue.insert(RobotState.initial_state(no_moves))

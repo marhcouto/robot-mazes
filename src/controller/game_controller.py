@@ -1,12 +1,9 @@
 import pygame
-from view.animator import RobotAnimator
+from src.view.animator import RobotAnimator
 
 
-from view.game_view import GameView
-from model.game_model import Direction, Maze, GameModel
-
-
-
+from src.view.game_view import GameView
+from src.model.game_model import Direction, Maze, GameModel
 
 
 class GameController:
@@ -15,7 +12,6 @@ class GameController:
         self.__game_model: GameModel = GameModel(Maze.random_puzzle(), 5)
         self.__game_view: GameView = GameView(surface, self.__game_model)
         self.__robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
-
 
     def run(self):
         running = True
@@ -30,7 +26,6 @@ class GameController:
             self.__game_view.draw_static()
             self.__game_view.draw_dynamic(self.__game_model.maze.init_robot_pos)
             pygame.display.flip()
-
 
             pygame.event.wait()
             keys = pygame.key.get_pressed()
@@ -51,6 +46,3 @@ class GameController:
                 continue
             
             self.__game_view.update(self.__game_model)
-               
-
-        

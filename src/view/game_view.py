@@ -1,14 +1,13 @@
 import pygame
 
-from model.game_model import Maze, Position, Direction, GameModel
-from view.view_utils import EdgeFactory, MazeEdge
+from src.model.game_model import Maze, Position, Direction, GameModel
+from src.view.view_utils import EdgeFactory, MazeEdge
 
 
 class View:
-
     def __init__(self, surface: pygame.Surface, model = None):
         self._surface = surface
-        self.model = model
+        self.__model = model
         self._build()
 
     def _build(self):
@@ -21,41 +20,38 @@ class View:
     def draw_static(self):
         pass
 
-
     def draw_dynamic(self, **data):
         pass
 
+    @property
+    def model(self):
+        return self.__model
 
+    @model.setter
+    def model(self, new_model):
+        self.__model = new_model
 
 
 class MazeView(View):
-
     SQUARE_WIDTH = 50
     TOP = 50
-
-
-    def row_column_to_x_y(self, position: Position):
-        return (position.column * MazeView.SQUARE_WIDTH + MazeView.left(self._surface, self.model), position.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
-
-
-
-    def left(surface: pygame.Surface, maze: Maze):
-        screen_w, _ = surface.get_size()
-        return (screen_w - maze.size * MazeView.SQUARE_WIDTH) / 2
-
-
-
 
     def __init__(self, surface: pygame.Surface, maze: Maze):
         super().__init__(surface, maze)
 
+    def row_column_to_x_y(self, position: Position):
+        return (position.column * MazeView.SQUARE_WIDTH + MazeView.left(self._surface, self.model), position.row * MazeView.SQUARE_WIDTH + MazeView.TOP)
+
+    @staticmethod
+    def left(surface: pygame.Surface, maze: Maze):
+        screen_w, _ = surface.get_size()
+        return (screen_w - maze.size * MazeView.SQUARE_WIDTH) / 2
 
     def _build(self):
         self.robot = MazeView.load_robot()
         self.__left = MazeView.left(self._surface, self.model)
 
-
-
+    @staticmethod
     def load_robot():
         return pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
         
@@ -100,14 +96,8 @@ class MazeView(View):
                     pygame.draw.line(self._surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
                         (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row - 1) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
 
-
     def draw_dynamic(self, position: Position):
         self._surface.blit(self.robot, self.row_column_to_x_y(position))
-
-
-
-
-
 
 
 class MovesView(View):
@@ -126,7 +116,6 @@ class MovesView(View):
         self.__left = pygame.transform.scale(pygame.image.load('./assets/img/arrow_left.png'), (75, 75))
         self.__right = pygame.transform.scale(pygame.image.load('./assets/img/arrow_right.png'), (75, 75))
 
-
     def draw_static(self):
 
         self._build()
@@ -138,7 +127,6 @@ class MovesView(View):
             self.__draw_move(move, (x, y))
             x += self.ARROW_WIDTH
 
-    
     def __draw_move(self, move: Direction, position: tuple):
 
         if move == Direction.UP:
@@ -151,24 +139,19 @@ class MovesView(View):
             self._surface.blit(self.__right, position)
 
 
-
-
 class GameView(View):
 
     def __init__(self, surface: pygame.Surface, model: GameModel):
         super().__init__(surface, model)
-        
-    
+
     def _build(self):
         self.maze_view = MazeView(self._surface, self.model.maze)
         self.moves_view = MovesView(self._surface, self.model.moves)
-
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))
         self.maze_view.draw_static()
         self.moves_view.draw_static()
-
 
     def draw_dynamic(self, position: Position):
         self.maze_view.draw_dynamic(position)

@@ -1,7 +1,3 @@
-
-
-
-
 class MazeEdge:
 
     def __init__(self, width, color):
@@ -17,11 +13,11 @@ class MazeEdge:
         return self.__color
 
 
-
-class EdgeFactory: 
-
+class EdgeFactory:
+    @staticmethod
     def real_wall():
         return MazeEdge(4, (0, 0, 0))
 
+    @staticmethod
     def no_wall():
         return MazeEdge(1, (100, 100, 100))
