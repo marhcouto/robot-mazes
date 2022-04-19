@@ -54,7 +54,3 @@ class GameController:
                
 
         
-
-
-def animation(surface, maze, starting_position, ending_position):
-    pass
