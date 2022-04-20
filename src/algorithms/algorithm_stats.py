@@ -15,3 +15,6 @@ class AlgorithmStats:
     @property
     def solution_depth(self):
         self.__solution_depth
+
+    def __str__(self):
+        return "Time: " + self.__time

@@ -1,10 +1,12 @@
 from queue import Queue, LifoQueue
-from time import time, time_ns, perf_counter_ns
+from time import perf_counter_ns
 
-from state import State
-from algorithm_stats import AlgorithmStats
+from algorithms.state import State
+from algorithms.algorithm_stats import AlgorithmStats
 from algorithms.heap import Heap
 from model.game_model import GameModel
+from model.sample_mazes import SAMPLE_MAZE
+
 
 def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     q = Queue()
@@ -39,6 +41,10 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
     history = cur_state.build_state_history()
+
+    print("HISTORY:")
+    for state in history:
+        print(state)
 
     return AlgorithmStats(time, nodes_explored, len(history))
 
@@ -173,3 +179,14 @@ def a_star_search(game_model: GameModel, heuristic):
     history = cur_node.build_state_history()
 
     return AlgorithmStats(time, iter_num, len(history))
+
+
+if __name__ == '__main__':
+
+    game_model: GameModel = GameModel(SAMPLE_MAZE, 5)
+
+    result: AlgorithmStats = breadth_first_search(game_model)
+    print(result)
+
+
+
