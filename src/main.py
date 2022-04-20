@@ -1,5 +1,5 @@
 import pygame
-from src.menu.main_menu import MainMenu
+from menu.main_menu import MainMenu
 from typing import Optional
 
 WINDOW_SIZE = (1200, 760)

@@ -1,7 +1,7 @@
 import pygame
 import pygame_menu
-from src.model.game_model import GameModel, Maze, Position
-from src.view.game_view import GameView
+from model.game_model import GameModel, Maze, Position
+from view.game_view import GameView
 
 
 class MazeCreationMenu:

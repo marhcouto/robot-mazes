@@ -1,5 +1,5 @@
 import pygame_menu
-from src.menu.maze_selector_menu import MazeSelectorMenu
+from menu.maze_selector_menu import MazeSelectorMenu
 
 
 class MainMenu:

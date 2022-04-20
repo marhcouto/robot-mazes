@@ -1,10 +1,10 @@
 import pygame
 import pygame_menu
-import src.algorithms.algorithms
-from src.menu.maze_creation_menu import MazeCreationMenu
-from src.menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
-from src.model.sample_mazes import SAMPLE_MAZE
-from src.view.game_view import MazeView
+import algorithms.algorithms
+from menu.maze_creation_menu import MazeCreationMenu
+from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
+from model.sample_mazes import SAMPLE_MAZE
+from view.game_view import MazeView
 
 
 class MazeSelectorMenu:
@@ -24,9 +24,9 @@ class MazeSelectorMenu:
             ('Custom Maze', None)
         ]
         self.__algorithms = [
-            ('Breadth-First Search', src.algorithms.algorithms.breadth_first_search),
-            ('Depth-First Search', src.algorithms.algorithms.depth_first_search),
-            ('Iterative Deepening DFS', src.algorithms.algorithms.iterative_deepening_search)
+            ('Breadth-First Search', algorithms.algorithms.breadth_first_search),
+            ('Depth-First Search', algorithms.algorithms.depth_first_search),
+            ('Iterative Deepening DFS', algorithms.algorithms.iterative_deepening_search)
         ]
         self.__cur_maze = 0
         self.__cur_algorithm = 0

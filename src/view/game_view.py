@@ -1,7 +1,7 @@
 import pygame
 
-from src.model.game_model import Maze, Position, Direction, GameModel
-from src.view.view_utils import EdgeFactory, MazeEdge
+from model.game_model import Maze, Position, Direction, GameModel
+from view.view_utils import EdgeFactory, MazeEdge
 
 
 class View:

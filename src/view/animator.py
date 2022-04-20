@@ -1,7 +1,7 @@
 import pygame
 
-from src.view.game_view import GameView, View, MazeView
-from src.model.game_model import Maze, Position, Direction
+from view.game_view import GameView, View, MazeView
+from model.game_model import Maze, Position, Direction
 
 
 class Animator:

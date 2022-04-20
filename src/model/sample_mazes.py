@@ -1,4 +1,4 @@
-from src.model.game_model import Maze, GameModel, Position
+from model.game_model import Maze, GameModel, Position
 
 SAMPLE_MAZE = GameModel (
     Maze(

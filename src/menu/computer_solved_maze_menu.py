@@ -1,7 +1,7 @@
 import pygame
 import pygame_menu
-from src.view.game_view import GameView
-from src.view.animator import RobotAnimator
+from view.game_view import GameView
+from view.animator import RobotAnimator
 
 class ComputerSolvedMazeMenu:
     def __init__(self, window_size, algorithm, game_model):

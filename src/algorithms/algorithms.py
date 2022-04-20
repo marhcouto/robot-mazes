@@ -1,6 +1,6 @@
 from queue import Queue, LifoQueue
-from src.algorithms.heap import Heap
-from src.model.game_model import GameModel
+from algorithms.heap import Heap
+from model.game_model import GameModel
 
 def breadth_first_search(game_state):
     q = Queue()
