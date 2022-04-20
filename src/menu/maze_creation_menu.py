@@ -25,6 +25,10 @@ class MazeCreationMenu:
             self.maze_creation_menu.remove_widget(widget)
         self.__current_state_widgets = []
 
+    def __update_maze_n_sol(self, n_sol):
+        if n_sol.isdigit():
+            self.__internal_state.no_moves = int(n_sol)
+
     def __update_maze_size(self, new_size):
         if new_size.isdigit():
             self.__internal_state = GameModel(Maze(int(new_size), None, None, []), 0)
@@ -34,6 +38,10 @@ class MazeCreationMenu:
             'Size: ',
             maxchar=1,
             onreturn=self.__update_maze_size
+        )
+        maze_n_sol = self.maze_creation_menu.add.text_input(
+            'Solution Size: ',
+            onreturn=self.__update_maze_n_sol
         )
         if self.__internal_state.maze.size:
             maze_size.set_value(str(self.__internal_state.maze.size))

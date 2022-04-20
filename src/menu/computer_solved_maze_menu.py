@@ -3,6 +3,7 @@ import pygame_menu
 from view.game_view import GameView
 from view.animator import RobotAnimator
 
+
 class ComputerSolvedMazeMenu:
     def __init__(self, window_size, algorithm, game_model):
         self.__window_size = window_size
