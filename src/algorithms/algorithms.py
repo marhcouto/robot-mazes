@@ -1,10 +1,11 @@
 from queue import Queue, LifoQueue
-from time import time, time_ns, perf_counter_ns
+from time import perf_counter_ns
 
-from state import State
-from algorithm_stats import AlgorithmStats
+from algorithms.state import State
+from algorithms.algorithm_stats import AlgorithmStats
 from algorithms.heap import Heap
 from model.game_model import GameModel
+
 
 def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     q = Queue()

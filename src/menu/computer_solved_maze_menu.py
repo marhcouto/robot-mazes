@@ -17,7 +17,7 @@ class ComputerSolvedMazeMenu:
             rows=3,
             theme=pygame_menu.themes.THEME_DARK
         )
-        self.__maze_surface = pygame.Surface(550, 550)
+        self.__maze_surface = pygame.Surface((550, 550))
         self.__menu.add.label(title="Execution Time: {0}".format(self.__solution.time))
         self.__menu.add.label(title="Iterations: {0}".format(self.__solution.iterations))
         self.__menu.add.label(title="Solution Depth: {0}".format(self.__solution.solution_depth))
