@@ -8,6 +8,7 @@ from model.game_model import GameModel
 from model.sample_mazes import SAMPLE_MAZE
 
 
+
 def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     q = Queue()
     s = set()

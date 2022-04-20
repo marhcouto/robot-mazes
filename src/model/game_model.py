@@ -164,6 +164,10 @@ class GameModel:
     def no_moves(self):
         return self.__no_moves
 
+    @no_moves.setter
+    def no_moves(self, new_no_moves):
+        self.__no_moves = new_no_moves
+
     @property
     def moves(self):
         return self.__moves
