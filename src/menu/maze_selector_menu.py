@@ -38,7 +38,9 @@ class MazeSelectorMenu:
         if not self.__updating_widgets:
             self.__update_widgets()
         if self.mazes[self.__cur_maze][1]:
-            MazeView(self.__maze_surface, self.mazes[self.__cur_maze][1].maze).draw_static()
+            maze_view = MazeView(self.__maze_surface, self.mazes[self.__cur_maze][1].maze)
+            maze_view.draw_static()
+            maze_view.draw_dynamic(self.mazes[self.__cur_maze][1].maze.init_robot_pos)
         else:
             self.__maze_surface.fill((255, 255, 255))
 
@@ -78,7 +80,9 @@ class MazeSelectorMenu:
             maze_surface
         ]
         if self.mazes[self.__cur_maze][1]:
-            MazeView(self.__maze_surface, self.mazes[self.__cur_maze][1].maze).draw_static()
+            maze_view = MazeView(self.__maze_surface, self.mazes[self.__cur_maze][1].maze)
+            maze_view.draw_static()
+            maze_view.draw_dynamic(self.mazes[self.__cur_maze][1].maze.init_robot_pos)
         self.__updating_widgets = False
 
     @property

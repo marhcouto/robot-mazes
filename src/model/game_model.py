@@ -131,8 +131,7 @@ class GameModel:
     def __init__(self, maze: Maze, no_moves: int):
         self.__no_moves: int = no_moves
         self.__maze: Maze = maze
-        move_gen = itertools.cycle([Direction.UP, Direction.RIGHT, Direction.LEFT, Direction.DOWN])
-        self.__moves = tuple([next(move_gen) for _ in range(no_moves)])
+        self.__moves = tuple()
 
     def simulate(self, animator):
         robot_pos = self.__maze.init_robot_pos

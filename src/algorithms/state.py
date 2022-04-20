@@ -1,4 +1,4 @@
-from model.game_model import Direction
+from src.model.game_model import Direction
 
 class InvalidChangeException(Exception):
     pass

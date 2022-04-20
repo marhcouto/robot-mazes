@@ -54,9 +54,6 @@ class MazeView(View):
     @staticmethod
     def load_robot():
         return pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
-        
-
-
 
     def draw_static(self):
 

@@ -8,7 +8,7 @@ from src.model.game_model import Direction, Maze, GameModel
 
 class GameController:
 
-    def __init__(self, surface):
+    def __init__(self, surface: pygame.Surface):
         self.__game_model: GameModel = GameModel(Maze.random_puzzle(), 5)
         self.__game_view: GameView = GameView(surface, self.__game_model)
         self.__robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
@@ -17,7 +17,6 @@ class GameController:
         running = True
 
         while running:
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()

@@ -80,7 +80,9 @@ class MazeCreationMenu:
         self.__remove_current_state_widgets()
         self.__current_state_widgets = new_state_callback()
         if self.__internal_state_valid:
-            GameView(self.__maze_render_surface, self.__internal_state).draw_static()
+            game_view = GameView(self.__maze_render_surface, self.__internal_state)
+            game_view.draw_static()
+            game_view.draw_dynamic(self.__internal_state.maze.inital_robot_pos)
 
     def __delete_state_widgets(self, widget_list):
         for widget in widget_list:
@@ -155,7 +157,9 @@ class MazeCreationMenu:
         action_callback(menu_data)
         self.__current_state_widgets = self.__add_choice_widgets()
         if self.__internal_state_valid:
-            GameView(self.__maze_render_surface, self.__internal_state).draw_static()
+            game_view = GameView(self.__maze_render_surface, self.__internal_state)
+            game_view.draw_static()
+            game_view.draw_dynamic(self.__internal_state.maze.init_robot_pos)
 
     def __set_init_pos(self, init_pos):
         if init_pos[0].isdigit() and init_pos[1].isdigit():

@@ -3,8 +3,8 @@ import pygame
 from src.view.game_view import GameView, View, MazeView
 from src.model.game_model import Maze, Position, Direction
 
-class Animator:
 
+class Animator:
     def __init__(self, surface: pygame.Surface, animated_view: View, general_view: View):
         self._animated_view = animated_view
         self._general_view = general_view
@@ -14,11 +14,8 @@ class Animator:
         pass
 
 class RobotAnimator(Animator):
-
-
     def __init__(self, surface: pygame.Surface, animated_view: View, general_view: View):
         super().__init__(surface, animated_view, general_view)
-
 
     def animate(self, position: Position, direction: Direction):
         current_pos: Position = self._animated_view.row_column_to_x_y(position)
