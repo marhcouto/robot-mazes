@@ -26,7 +26,9 @@ class ComputerSolvedMazeMenu:
         self.__menu.add.surface(self.__maze_surface)
 
     def __draw_initial_state_maze(self):
-
+        game_view = GameView(self.__maze_surface, self.__game_model)
+        game_view.draw_static()
+        game_view.draw_dynamic(self.__game_model.maze.init_robot_pos)
 
     def __animate_robot(self):
         game_view = GameView(self.__maze_surface, self.__game_model)
@@ -34,6 +36,5 @@ class ComputerSolvedMazeMenu:
 
     @property
     def computer_solved_maze_menu(self):
-        self.__menu
-        return None
+        return self.__menu
 
