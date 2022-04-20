@@ -40,7 +40,7 @@ class GameController:
             elif keys[pygame.K_BACKSPACE]:
                 self.__game_model.pop_move()
             elif keys[pygame.K_RETURN]:
-                self.__game_model.simulate(self.__robot_animator)
+                self.__game_model.simulate(self.__robot_animator, self.__game_model.moves)
             else:
                 continue
             

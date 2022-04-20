@@ -1,4 +1,3 @@
-import itertools
 from copy import deepcopy
 from enum import Enum
 
@@ -133,13 +132,14 @@ class GameModel:
         self.__maze: Maze = maze
         self.__moves = tuple()
 
-    def simulate(self, animator):
+    def simulate(self, animator, moves):
         robot_pos = self.__maze.init_robot_pos
         while True:
             init_cycle_pos = deepcopy(robot_pos)
-            for direction in self.__moves:
+            for direction in moves:
                 if self.__maze.can_move(robot_pos, direction):
-                    animator.animate(robot_pos, direction)
+                    if animator is not None:
+                        animator.animate(robot_pos, direction)
                     if robot_pos.move(direction) == self.__maze.final_robot_pos:
                         return True
                     robot_pos = robot_pos.move(direction)

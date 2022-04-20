@@ -3,7 +3,7 @@ from src.model.game_model import Direction
 class InvalidChangeException(Exception):
     pass
 
-class RobotState:
+class State:
     possible_directions = (Direction.UP, Direction.DOWN, Direction.RIGHT, Direction.LEFT)
 
     def __init__(self, tuple_of_moves, parent):
@@ -20,10 +20,10 @@ class RobotState:
         return self.__parent
 
     def change(self, index, direction):
-        if self.__tuple_of_moves[index] == direction or index < 0 or index >= self.__size and direction in RobotState.possible_directions:
+        if self.__tuple_of_moves[index] == direction or index < 0 or index >= self.__size and direction in State.possible_directions:
             raise InvalidChangeException
         
-        return RobotState(tuple([self.__tuple_of_moves[i] if i != index else direction for i in range(self.__size)]), self)
+        return State(tuple([self.__tuple_of_moves[i] if i != index else direction for i in range(self.__size)]), self)
 
     def initial_state(size):
         moves = []
@@ -31,7 +31,7 @@ class RobotState:
         for i in range(size):
             moves.append(Direction.UP if i % 2 == 0 else Direction.RIGHT)
 
-        return RobotState(tuple(moves), None)
+        return State(tuple(moves), None)
 
     def generate_all_children(self):
         for idx in range(len(self.__tuple_of_moves)):
