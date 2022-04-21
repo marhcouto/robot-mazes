@@ -40,7 +40,6 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
     history = cur_state.build_state_history()
-
     return AlgorithmStats(time, nodes_explored, len(history))
 
 

@@ -10,8 +10,8 @@ class AlgorithmStats:
 
     @property
     def iterations(self):
-        self.__iterations
+        return self.__iterations
 
     @property
     def solution_depth(self):
-        self.__solution_depth
+        return self.__solution_depth
