@@ -60,6 +60,7 @@ class State:
         while cur_state:
             state_list.append(cur_state)
             cur_state = cur_state.parent
+        state_list.append(cur_state)
         state_list.reverse()
         return state_list
 

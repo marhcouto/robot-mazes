@@ -1,5 +1,8 @@
+from algorithms.algorithms import State
+
+
 class AlgorithmStats:
-    def __init__(self, time: float, iterations: int, solution_state: list):
+    def __init__(self, time: float, iterations: int, solution_state: State):
         self.__time = time
         self.__iterations = iterations
         self.__solution_state = solution_state
