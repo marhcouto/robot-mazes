@@ -39,8 +39,8 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = cur_state.build_state_history()
-    return AlgorithmStats(time, nodes_explored, len(history))
+    history = [state for state in map(lambda x: x.moves, cur_state.build_state_history())]
+    return AlgorithmStats(time, nodes_explored, history)
 
 
 def depth_first_search(game_model: GameModel) -> AlgorithmStats:
@@ -75,9 +75,8 @@ def depth_first_search(game_model: GameModel) -> AlgorithmStats:
     
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = cur_state.build_state_history()
-
-    return AlgorithmStats(time, nodes_explored, len(history))
+    history = [state for state in map(lambda x: x.moves, cur_state.build_state_history())]
+    return AlgorithmStats(time, nodes_explored, history)
 
 
 def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
@@ -143,9 +142,8 @@ def greedy_search(game_model: GameModel, heuristic):
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = current_state.build_state_history()
-
-    return AlgorithmStats(time, nodes_explored, len(history))
+    history = [state for state in map(lambda x: x.moves, current_state.build_state_history())]
+    return AlgorithmStats(time, nodes_explored, history)
 
 
 def a_star_search(game_model: GameModel, heuristic):
@@ -170,6 +168,5 @@ def a_star_search(game_model: GameModel, heuristic):
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = cur_node.build_state_history()
-
-    return AlgorithmStats(time, iter_num, len(history))
+    history = [state for state in map(lambda x: x.moves, cur_node.build_state_history())]
+    return AlgorithmStats(time, iter_num, history)

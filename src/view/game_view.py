@@ -56,7 +56,6 @@ class MazeView(View):
         return pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
 
     def draw_static(self):
-
         passage: MazeEdge = EdgeFactory.no_wall()
         wall: MazeEdge = EdgeFactory.real_wall()
 
@@ -86,12 +85,12 @@ class MazeView(View):
             for position2 in positions:
                 # Horizontal wall
                 if position1.column == position2.column:    
-                    pygame.draw.line(self._surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
-                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position2.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
+                    pygame.draw.line(self._surface, wall.color, (position1.column * MazeView.SQUARE_WIDTH + self.__left, position2.row * MazeView.SQUARE_WIDTH + MazeView.TOP),
+                        ((position1.column + 1) * MazeView.SQUARE_WIDTH + self.__left, position2.row * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
                 # Vertical wall
-                else: 
-                    pygame.draw.line(self._surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row) * MazeView.SQUARE_WIDTH + MazeView.TOP), 
-                        (position2.column * MazeView.SQUARE_WIDTH + self.__left, (self.model.size - position1.row - 1) * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
+                else:
+                    pygame.draw.line(self._surface, wall.color, (position2.column * MazeView.SQUARE_WIDTH + self.__left, (position1.row + 1) * MazeView.SQUARE_WIDTH + MazeView.TOP),
+                        (position2.column * MazeView.SQUARE_WIDTH + self.__left, position1.row * MazeView.SQUARE_WIDTH + MazeView.TOP), wall.width)
 
     def draw_dynamic(self, position: Position):
         self._surface.blit(self.robot, self.row_column_to_x_y(position))

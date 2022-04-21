@@ -1,5 +1,6 @@
 import pygame
 from menu.main_menu import MainMenu
+from controller.game_controller import GameController
 from typing import Optional
 
 WINDOW_SIZE = (1200, 760)
@@ -27,4 +28,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    pygame.init()
+    surface = pygame.display.set_mode(WINDOW_SIZE)
+    GameController(surface).run()
+
+
