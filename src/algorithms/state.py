@@ -9,7 +9,15 @@ class State:
     def __init__(self, tuple_of_moves, parent):
         self.__tuple_of_moves = tuple_of_moves
         self.__parent = parent
+        if not parent:
+            self.__depth = 0
+        else:
+            self.__depth = parent.depth + 1
         self.__size = len(tuple_of_moves)
+
+    @property
+    def depth(self):
+        return self.__depth
 
     @property
     def moves(self):

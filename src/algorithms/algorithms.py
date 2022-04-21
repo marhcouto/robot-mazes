@@ -1,3 +1,4 @@
+import math
 from queue import Queue, LifoQueue
 from time import perf_counter_ns
 
@@ -5,7 +6,6 @@ from algorithms.state import State
 from algorithms.algorithm_stats import AlgorithmStats
 from algorithms.heap import Heap
 from model.game_model import GameModel
-from model.sample_mazes import SAMPLE_MAZE
 
 
 
@@ -23,8 +23,8 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
 
     while True:
         if q.empty():
-            print("Empty queue")
-            return None
+            cur_state = None
+            break
 
         nodes_explored += 1
 
@@ -44,7 +44,7 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     return AlgorithmStats(time, nodes_explored, cur_state)
 
 
-def depth_first_search(game_model: GameModel, max_depth = 100) -> AlgorithmStats:
+def depth_first_search(game_model: GameModel, max_depth=math.inf) -> AlgorithmStats:
     q = LifoQueue()
     s = set()
     nodes_explored = 0
@@ -59,12 +59,14 @@ def depth_first_search(game_model: GameModel, max_depth = 100) -> AlgorithmStats
     while True:
         if q.empty():
             print("Empty queue")
-            return None
+            cur_state = None
+            break
 
         nodes_explored += 1
 
         cur_state = q.get()
-        if len(cur_state.build_state_history()):
+        print("({0}, {1})".format(cur_state.depth, max_depth))
+        if cur_state.depth < max_depth:
             s.add(cur_state)
             if game_model.simulate(None, cur_state.moves):
                 break
@@ -72,9 +74,6 @@ def depth_first_search(game_model: GameModel, max_depth = 100) -> AlgorithmStats
             for child in children:
                 if not (child in s):
                     q.put(child)
-        else:
-            cur_state = None
-            break
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
@@ -83,7 +82,6 @@ def depth_first_search(game_model: GameModel, max_depth = 100) -> AlgorithmStats
 
 def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
     depth = 0
-    starting_state = State.initial_state(game_model.no_moves)
 
     start_time: int = perf_counter_ns()
 
@@ -114,7 +112,8 @@ def greedy_search(game_model: GameModel, heuristic):
     while True:
         if state_queue.empty():
             print("Empty queue")
-            return None
+            current_state = None
+            break
 
         nodes_explored += 1
         current_state = state_queue.pop()
