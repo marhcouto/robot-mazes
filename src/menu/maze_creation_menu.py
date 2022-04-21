@@ -90,7 +90,7 @@ class MazeCreationMenu:
         if self.__internal_state_valid:
             game_view = GameView(self.__maze_render_surface, self.__internal_state)
             game_view.draw_static()
-            game_view.draw_dynamic(self.__internal_state.maze.inital_robot_pos)
+            game_view.draw_dynamic(self.__internal_state.maze.init_robot_pos)
 
     def __delete_state_widgets(self, widget_list):
         for widget in widget_list:

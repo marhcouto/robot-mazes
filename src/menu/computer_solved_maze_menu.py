@@ -1,5 +1,6 @@
 import pygame
 import pygame_menu
+import itertools
 from view.game_view import GameView
 from view.animator import RobotAnimator
 
@@ -14,17 +15,19 @@ class ComputerSolvedMazeMenu:
             width=self.__window_size[0],
             title='I.A Play',
             columns=2,
-            rows=3,
+            rows=4,
             theme=pygame_menu.themes.THEME_DARK
         )
         self.__maze_surface = pygame.Surface((550, 550))
         self.__menu.add.label(title="Execution Time: {0}".format(self.__solution.time))
         self.__menu.add.label(title="Iterations: {0}".format(self.__solution.iterations))
-        self.__menu.add.label(title="Solution Depth: {0}".format(self.__solution.solution_depth))
+        self.__menu.add.label(title="Solution Depth: {0}".format(len(self.__solution.solution_history)))
         self.__menu.add.button(
-            title="Simulate"
+            "Simulate",
+            self.__animate_robot
         )
-        self.__menu.add.surface(self.__maze_surface)
+        self.__maze_surface_widget = self.__menu.add.surface(self.__maze_surface)
+        self.__draw_initial_state_maze()
 
     def __draw_initial_state_maze(self):
         game_view = GameView(self.__maze_surface, self.__game_model)
@@ -33,9 +36,9 @@ class ComputerSolvedMazeMenu:
 
     def __animate_robot(self):
         game_view = GameView(self.__maze_surface, self.__game_model)
-        RobotAnimator(self.__maze_surface, game_view, game_view.maze_view)
+        cur_robot_pos = self.__game_model.maze.init_robot_pos
+        solution_tuple = self.__solution.solution_history[-1::][0]
 
     @property
     def computer_solved_maze_menu(self):
         return self.__menu
-
