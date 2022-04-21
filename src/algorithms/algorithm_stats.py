@@ -1,8 +1,8 @@
 class AlgorithmStats:
-    def __init__(self, time: float, iterations: int, solution_history: list):
+    def __init__(self, time: float, iterations: int, solution_state: list):
         self.__time = time
         self.__iterations = iterations
-        self.__solution_history = solution_history
+        self.__solution_state = solution_state
 
     @property
     def time(self):
@@ -13,9 +13,9 @@ class AlgorithmStats:
         return self.__iterations
 
     @property
-    def solution_depth(self):
-        self.__solution_depth
+    def solution_state(self):
+        return self.__solution_state
 
     @property
     def solution_history(self):
-        return self.__solution_history
+        return [state for state in map(lambda x: x.moves, self.__solution_state.build_state_history())]

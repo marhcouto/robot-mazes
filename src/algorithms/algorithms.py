@@ -41,11 +41,10 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = [state for state in map(lambda x: x.moves, cur_state.build_state_history())]
-    return AlgorithmStats(time, nodes_explored, history)
+    return AlgorithmStats(time, nodes_explored, cur_state)
 
 
-def depth_first_search(game_model: GameModel) -> AlgorithmStats:
+def depth_first_search(game_model: GameModel, max_depth = 100) -> AlgorithmStats:
     q = LifoQueue()
     s = set()
     nodes_explored = 0
@@ -65,20 +64,21 @@ def depth_first_search(game_model: GameModel) -> AlgorithmStats:
         nodes_explored += 1
 
         cur_state = q.get()
-        s.add(cur_state)
-
-        if game_model.simulate(None, cur_state.moves):
+        if len(cur_state.build_state_history()):
+            s.add(cur_state)
+            if game_model.simulate(None, cur_state.moves):
+                break
+            children = cur_state.generate_all_children()
+            for child in children:
+                if not (child in s):
+                    q.put(child)
+        else:
+            cur_state = None
             break
 
-        children = cur_state.generate_all_children()
-        for child in children:
-            if not (child in s):
-                q.put(child)
-    
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = [state for state in map(lambda x: x.moves, cur_state.build_state_history())]
-    return AlgorithmStats(time, nodes_explored, history)
+    return AlgorithmStats(time, nodes_explored, cur_state)
 
 
 def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
@@ -87,35 +87,19 @@ def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
 
     start_time: int = perf_counter_ns()
 
+    nodes_explored = 0
+
     while True:
-        found: State = dls(game_model, starting_state, depth)
+        alg_res = depth_first_search(game_model, depth)
+        found: State = alg_res.solution_state
+        nodes_explored += alg_res.iterations
         if found:
             break
         depth += 1
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = found.build_state_history()
-
-    return AlgorithmStats(time, )
-
-    
-
-
-def dls(game_model: GameModel, node: State, depth: int) -> State:
-
-    if depth == 0:
-        if game_model.simulate(node.moves):
-            return node
-        else:
-            return None
-    elif depth > 0:
-        children = node.generate_all_children()
-        for child in children:
-            found = dls(game_model, child, depth - 1)
-            if found:
-                return found
-    return None
+    return AlgorithmStats(time, nodes_explored, found)
 
 
 def greedy_search(game_model: GameModel, heuristic):

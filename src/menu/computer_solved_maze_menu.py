@@ -1,8 +1,6 @@
 import pygame
 import pygame_menu
-import itertools
 from view.game_view import GameView
-from view.animator import RobotAnimator
 
 
 class ComputerSolvedMazeMenu:
@@ -18,16 +16,20 @@ class ComputerSolvedMazeMenu:
             rows=4,
             theme=pygame_menu.themes.THEME_DARK
         )
-        self.__maze_surface = pygame.Surface((550, 550))
-        self.__menu.add.label(title="Execution Time: {0}".format(self.__solution.time))
-        self.__menu.add.label(title="Iterations: {0}".format(self.__solution.iterations))
-        self.__menu.add.label(title="Solution Depth: {0}".format(len(self.__solution.solution_history)))
-        self.__menu.add.button(
-            "Simulate",
-            self.__animate_robot
-        )
-        self.__maze_surface_widget = self.__menu.add.surface(self.__maze_surface)
-        self.__draw_initial_state_maze()
+        if not self.__solution.solution_state:
+            self.__menu.add.label(title="No solution found")
+        else:
+            self.__maze_surface = pygame.Surface((550, 550))
+            self.__game_view: GameView = GameView(self.__maze_surface, self.__game_model)
+            self.__menu.add.label(title="Execution Time: {0}".format(self.__solution.time))
+            self.__menu.add.label(title="Iterations: {0}".format(self.__solution.iterations))
+            self.__menu.add.label(title="Solution Depth: {0}".format(len(self.__solution.solution_history)))
+            self.__menu.add.button(
+                "Simulate",
+                self.__animate_robot
+            )
+            self.__maze_surface_widget = self.__menu.add.surface(self.__maze_surface)
+            self.__draw_initial_state_maze()
 
     def __draw_initial_state_maze(self):
         game_view = GameView(self.__maze_surface, self.__game_model)

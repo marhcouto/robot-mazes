@@ -1,9 +1,10 @@
 import pygame
 import pygame_menu
 import algorithms.algorithms
+import algorithms.heuristic
 from menu.maze_creation_menu import MazeCreationMenu
 from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
-from model.sample_mazes import SAMPLE_MAZE
+from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
 
 
@@ -21,12 +22,14 @@ class MazeSelectorMenu:
         )
         self.__mazes = [
             ('Sample(4x4) 4', SAMPLE_MAZE),
+            ('Maze(13) 6', MAZE_13),
             ('Custom Maze', None)
         ]
         self.__algorithms = [
             ('Breadth-First Search', algorithms.algorithms.breadth_first_search),
             ('Depth-First Search', algorithms.algorithms.depth_first_search),
-            ('Iterative Deepening DFS', algorithms.algorithms.iterative_deepening_search)
+            ('Iterative Deepening DFS', algorithms.algorithms.iterative_deepening_search),
+            ('Greedy(Manhattan)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.manhattan_distance))
         ]
         self.__cur_maze = 0
         self.__cur_algorithm = 0

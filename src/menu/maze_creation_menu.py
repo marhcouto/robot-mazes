@@ -45,8 +45,11 @@ class MazeCreationMenu:
         )
         if self.__internal_state.maze.size:
             maze_size.set_value(str(self.__internal_state.maze.size))
+        if self.__internal_state.no_moves:
+            maze_n_sol.set_value(str(self.__internal_state.maze.size))
         return [
             maze_size,
+            maze_n_sol,
             self.maze_creation_menu.add.button('Set Initial Position', lambda: self.__change_state(
                 lambda: self.__add_cell_input(
                     'Set Initial Position',
