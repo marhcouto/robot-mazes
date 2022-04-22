@@ -3,8 +3,8 @@ from queue import Queue
 
 
 def manhattan_distance(game_model, state):
-    #return abs(final_pos.row - game_model.maze.final_robot_pos.row) + abs(final_pos.column - game_model.maze.final_robot_pos.column)
-    return None
+    final_pos = game_model.simulate(state.moves)[1][-1:][0]
+    return abs(final_pos.row - game_model.maze.final_robot_pos.row) + abs(final_pos.column - game_model.maze.final_robot_pos.column)
 
 
 def generate_neighbour_positions(maze, cur_robot_pos):
@@ -45,6 +45,10 @@ def maze_bfs(maze):
     return path
 
 
-def shortest_path_heuristic(game_model, state):
-    for position in maze_bfs(game_model.maze):
-        print(position)
+def shortest_path_heuristic(game_model, shortest_path, state):
+    loop_path = game_model.simulate(state.moves)[1]
+    common_positions = set()
+    for position in shortest_path:
+        if position in loop_path:
+            common_positions.add(position)
+    return len(shortest_path) - len(common_positions)

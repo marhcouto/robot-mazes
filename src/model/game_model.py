@@ -132,20 +132,20 @@ class GameModel:
         self.__maze: Maze = maze
         self.__moves = tuple()
 
-    def simulate(self, animator, moves):
+    def simulate(self, moves):
         robot_pos = self.__maze.init_robot_pos
+        robot_path = [robot_pos]
         while True:
             init_cycle_pos = deepcopy(robot_pos)
             for direction in moves:
                 if self.__maze.can_move(robot_pos, direction):
-                    if animator is not None:
-                        animator.animate(robot_pos, direction)
                     if robot_pos.move(direction) == self.__maze.final_robot_pos:
-                        return True
+                        robot_path.append(robot_pos.move(direction))
+                        return True, robot_path
                     robot_pos = robot_pos.move(direction)
+                    robot_path.append(robot_pos)
             if init_cycle_pos == robot_pos:
-                break
-        return False
+                return False, robot_path
 
     def add_move(self, direction: Direction):
         if len(self.__moves) >= self.__no_moves:

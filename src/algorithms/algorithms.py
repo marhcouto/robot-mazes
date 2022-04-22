@@ -8,7 +8,6 @@ from algorithms.heap import Heap
 from model.game_model import GameModel
 
 
-
 def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     q = Queue()
     s = set()
@@ -31,7 +30,7 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
         cur_state = q.get()
         s.add(cur_state)
 
-        if game_model.simulate(None, cur_state.moves):
+        if game_model.simulate(cur_state.moves)[0]:
             break
 
         children = cur_state.generate_all_children()
@@ -65,10 +64,9 @@ def depth_first_search(game_model: GameModel, max_depth=math.inf) -> AlgorithmSt
         nodes_explored += 1
 
         cur_state = q.get()
-        print("({0}, {1})".format(cur_state.depth, max_depth))
         if cur_state.depth < max_depth:
             s.add(cur_state)
-            if game_model.simulate(None, cur_state.moves):
+            if game_model.simulate(cur_state.moves)[0]:
                 break
             children = cur_state.generate_all_children()
             for child in children:
@@ -104,7 +102,7 @@ def greedy_search(game_model: GameModel, heuristic):
 
     nodes_explored: int = 0
     visited_states = set()
-    state_queue = Heap(heuristic)
+    state_queue = Heap(lambda state: heuristic(game_model, state))
     state_queue.insert(State.initial_state(game_model.no_moves))
     current_state: State
 
@@ -118,7 +116,7 @@ def greedy_search(game_model: GameModel, heuristic):
         nodes_explored += 1
         current_state = state_queue.pop()
         visited_states.add(current_state)
-        if game_model.simulate(None, current_state.moves):
+        if game_model.simulate(current_state.moves)[0]:
             break
         new_valid_nodes = current_state.generate_all_children()
         for node in new_valid_nodes:
@@ -127,13 +125,12 @@ def greedy_search(game_model: GameModel, heuristic):
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = [state for state in map(lambda x: x.moves, current_state.build_state_history())]
-    return AlgorithmStats(time, nodes_explored, history)
+    return AlgorithmStats(time, nodes_explored, current_state)
 
 
 def a_star_search(game_model: GameModel, heuristic):
     visited_nodes = {}
-    node_queue = Heap(heuristic)
+    node_queue = Heap(lambda state: heuristic(game_model, state))
     node_queue.insert(State.initial_state(game_model.no_moves))
     cur_node: State
     iter_num = 0
@@ -143,15 +140,14 @@ def a_star_search(game_model: GameModel, heuristic):
     while not node_queue.empty():
         iter_num += 1
         cur_node = node_queue.pop()
-        visited_nodes[cur_node] = heuristic(cur_node) if not (cur_node.parent in visited_nodes) else visited_nodes[cur_node.parent] + heuristic(cur_node)
-        if game_model.simulate(None, cur_node.moves):
+        visited_nodes[cur_node] = heuristic(game_model, cur_node) if not (cur_node.parent in visited_nodes) else visited_nodes[cur_node.parent] + heuristic(game_model, cur_node)
+        if game_model.simulate(cur_node.moves)[0]:
             break
         next_nodes = cur_node.generate_all_children()
         for node in next_nodes:
             if node not in visited_nodes:
-                node_queue.insert_with_custom_value(visited_nodes[cur_node] + heuristic(node), node)
+                node_queue.insert_with_custom_value(visited_nodes[cur_node] + heuristic(game_model, node), node)
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
-    history = [state for state in map(lambda x: x.moves, cur_node.build_state_history())]
-    return AlgorithmStats(time, iter_num, history)
+    return AlgorithmStats(time, iter_num, cur_node)
