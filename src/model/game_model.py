@@ -130,7 +130,6 @@ class GameModel:
     def __init__(self, maze: Maze, no_moves: int):
         self.__no_moves: int = no_moves
         self.__maze: Maze = maze
-        self.__moves = tuple()
         self.__victory = False
 
     def simulate(self, moves):
@@ -147,19 +146,6 @@ class GameModel:
             if init_cycle_pos == robot_pos:
                 return False, robot_path
 
-    def add_move(self, direction: Direction):
-        if len(self.__moves) >= self.__no_moves:
-            return None
-        else:
-            self.__moves = self.__moves + (direction, )
-            return direction
-
-    def pop_move(self):
-        if len(self.__moves) <= 0:
-            return None
-        self.__moves = self.__moves[:-1]
-        return self.__moves
-
     @property
     def no_moves(self):
         return self.__no_moves
@@ -167,14 +153,6 @@ class GameModel:
     @no_moves.setter
     def no_moves(self, new_no_moves):
         self.__no_moves = new_no_moves
-
-    @property
-    def moves(self):
-        return self.__moves
-    
-    @moves.setter
-    def moves(self, new_moves):
-        self.__moves = new_moves
 
     @property
     def maze(self):

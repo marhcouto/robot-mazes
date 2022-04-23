@@ -15,6 +15,7 @@ class Controller:
         self._surface = surface
         self._game_model = game_model
         self._robot_animator = None
+        self._moves = []
 
     def run(self):
         pass
@@ -23,7 +24,7 @@ class Controller:
         robot_pos = self._game_model.maze.init_robot_pos
         maze = self._game_model.maze
         animator = self._robot_animator
-        moves = self._game_model.moves
+        moves = self._moves
         robot_path = [robot_pos]
         while True:
             init_cycle_pos = deepcopy(robot_pos)
@@ -68,21 +69,22 @@ class IAController(Controller):
 
     def __init__(self, surface: pygame.Surface, game_model: GameModel, algorithm):
         super().__init__(surface, game_model)
-        self.__ia_view = IAView(surface, game_model)
+        self.__ia_view = IAView(surface, (game_model, [], AlgorithmStats(0, 0, None)))
         self._robot_animator: RobotAnimator = RobotAnimator(surface, self.__ia_view.maze_view, self.__ia_view)
         self.__algorithm = algorithm
 
     def run(self):
 
         results: AlgorithmStats = self.__algorithm(self._game_model)
-        self._game_model.moves = results.solution_state.moves
+        self._moves = results.solution_state.moves
         
-        self.__ia_view.update(self._game_model)
+        self.__ia_view.update((self._game_model, self._moves, results))
         self.__ia_view.draw_static()
         self.__ia_view.draw_dynamic(self._game_model.maze.init_robot_pos)
         pygame.display.update()
 
         self.simulate()
+        self.game_win()
 
 
         
@@ -92,7 +94,7 @@ class GameController(Controller):
 
     def __init__(self, surface: pygame.Surface, game_model: GameModel):
         super().__init__(surface, game_model)
-        self.__game_view: GameView = GameView(surface, self._game_model)
+        self.__game_view: GameView = GameView(surface, (self._game_model, tuple()))
         self._robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
 
     def run(self):
@@ -112,18 +114,18 @@ class GameController(Controller):
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                self._game_model.add_move(Direction.UP)
+                self._moves.append(Direction.UP)
             elif keys[pygame.K_DOWN]:
-                self._game_model.add_move(Direction.DOWN)
+                self._moves.append(Direction.DOWN)
             elif keys[pygame.K_LEFT]:
-                self._game_model.add_move(Direction.LEFT)
+                self._moves.append(Direction.LEFT)
             elif keys[pygame.K_RIGHT]:
-                self._game_model.add_move(Direction.RIGHT)
+                self._moves.append(Direction.RIGHT)
             elif keys[pygame.K_BACKSPACE]:
-                self._game_model.pop_move()
+                self._moves.pop()
             elif keys[pygame.K_RETURN]:
-                if len(self._game_model.moves) == self._game_model.no_moves:
-                    self.simulate()
+                if len(self._moves) == self._game_model.no_moves:
+                    self.simulate(self._moves)
             elif keys[pygame.K_ESCAPE]:
                 break
             else:

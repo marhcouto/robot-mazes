@@ -8,7 +8,7 @@ from view.view_utils import EdgeFactory, MazeEdge
 class View:
     def __init__(self, surface: pygame.Surface, model = None):
         self._surface = surface
-        self.__model = model
+        self.model = model
         self._build()
 
     def _build(self):
@@ -24,13 +24,6 @@ class View:
     def draw_dynamic(self, **data):
         pass
 
-    @property
-    def model(self):
-        return self.__model
-
-    @model.setter
-    def model(self, new_model):
-        self.__model = new_model
 
 
 class MazeView(View):
@@ -120,7 +113,7 @@ class MovesView(View):
         moves_string = 'Moves: {}'.format(self.model[1])
 
         text = pygame.font.Font(None, 48).render(moves_string, True, (0,0,0), (255, 255, 255))
-        self._surface.blit(text, (15, 10))
+        self._surface.blit(text, (30, 10))
    
         x = 10
         y = 40
@@ -141,22 +134,6 @@ class MovesView(View):
             self._surface.blit(self.__right, position)
 
 
-class GameView(View):
-
-    def __init__(self, surface: pygame.Surface, model: GameModel):
-        super().__init__(surface, model)
-
-    def _build(self):
-        self.maze_view = MazeView(self._surface, self.model.maze)
-        self.moves_view = MovesView(self._surface, (self.model.moves, self.model.no_moves))
-
-    def draw_static(self):
-        self._surface.fill((255, 255, 255))
-        self.maze_view.draw_static()
-        self.moves_view.draw_static()
-
-    def draw_dynamic(self, position: Position):
-        self.maze_view.draw_dynamic(position)
 
 class StatsView(View):
 
@@ -165,24 +142,29 @@ class StatsView(View):
 
     def draw_static(self):
 
-        if self._model is None:
+        print("Got here")
+
+        if self.model is None:
             return
+
+        print("Got here too")
+
         data = [
-            "Execution Time: {0}".format(self._model.time),
-            "Iterations: {0}".format(self._model.iterations),
-            "Solution Depth: {0}".format(len(self._model.solution_history)),
+            "Execution Time: {0} ms".format(self.model.time),
+            "Iterations: {0}".format(self.model.iterations),
+            "Solution Depth: {0}".format(len(self.model.solution_history)),
             "Found Solution: {0}".format(self.__render_solution())
         ]
 
-        y = 80
+        y = 200
         for sentence in data:
             text = pygame.font.Font(None, 48).render(sentence, True, (0,0,0), (255, 255, 255))
-            self._surface.blit(text, (15, y))
-            y += 20
+            self._surface.blit(text, (30, y))
+            y += 40
 
     def __render_solution(self):
-        res_str = "({0}".format(self.__render_direction(self.__solution.solution_history[-1::][0][0]))
-        for direction in self.__solution.solution_history[-1::][0][1::]:
+        res_str = "({0}".format(self.__render_direction(self.model.solution_history[-1::][0][0]))
+        for direction in self.model.solution_history[-1::][0][1::]:
             res_str += ", {0}".format(self.__render_direction(direction))
         res_str += ")"
         return res_str
@@ -200,20 +182,40 @@ class StatsView(View):
 
 
 
-class IAView(View):
+class GameView(View):
 
-    def __init__(self, surface: pygame.Surface, model: GameModel):
+    def __init__(self, surface: pygame.Surface, model):
         super().__init__(surface, model)
 
     def _build(self):
-        self.maze_view = MazeView(self._surface, self.model.maze)
-        self.moves_view = MovesView(self._surface, (self.model.moves, self.model.no_moves))
-        self.results_view = StatsView(self, None)
+        self.maze_view = MazeView(self._surface, self.model[0].maze)
+        self.moves_view = MovesView(self._surface, (self.model[1], self.model[0].no_moves))
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))
         self.maze_view.draw_static()
         self.moves_view.draw_static()
+
+    def draw_dynamic(self, position: Position):
+        self.maze_view.draw_dynamic(position)
+
+
+
+class IAView(View):
+
+    def __init__(self, surface: pygame.Surface, model):
+        super().__init__(surface, model)
+
+    def _build(self):
+        self.maze_view = MazeView(self._surface, self.model[0].maze)
+        self.moves_view = MovesView(self._surface, (self.model[1], self.model[0].no_moves))
+        self.results_view = StatsView(self._surface, self.model[2])
+
+    def draw_static(self):
+        self._surface.fill((255, 255, 255))
+        self.maze_view.draw_static()
+        self.moves_view.draw_static()
+        self.results_view.draw_static()
 
     def draw_dynamic(self, position: Position):
         self.maze_view.draw_dynamic(position)
