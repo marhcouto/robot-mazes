@@ -1,4 +1,5 @@
 import pygame
+from algorithms.algorithm_stats import AlgorithmStats
 
 from model.game_model import Maze, Position, Direction, GameModel
 from view.view_utils import EdgeFactory, MazeEdge
@@ -33,7 +34,7 @@ class View:
 
 
 class MazeView(View):
-    SQUARE_WIDTH = 50
+    SQUARE_WIDTH = 80
     TOP = 50
 
     def __init__(self, surface: pygame.Surface, maze: Maze):
@@ -45,7 +46,7 @@ class MazeView(View):
     @staticmethod
     def left(surface: pygame.Surface, maze: Maze):
         screen_w, _ = surface.get_size()
-        return (screen_w - maze.size * MazeView.SQUARE_WIDTH) / 2
+        return (screen_w - maze.size * MazeView.SQUARE_WIDTH - 100)
 
     def _build(self):
         self.robot = MazeView.load_robot()
@@ -53,7 +54,7 @@ class MazeView(View):
 
     @staticmethod
     def load_robot():
-        return pygame.transform.scale(pygame.image.load('./src/assets/img/robot.png'), (50, 50))
+        return pygame.transform.scale(pygame.image.load('./src/assets/img/robot.png'), (MazeView.SQUARE_WIDTH, MazeView.SQUARE_WIDTH))
 
     def draw_static(self):
         passage: MazeEdge = EdgeFactory.no_wall()
@@ -115,11 +116,16 @@ class MovesView(View):
     def draw_static(self):
 
         self._build()
-        
-        x = 10
-        y = 10
 
-        for move in self.model:
+        moves_string = 'Moves: {}'.format(self.model[1])
+
+        text = pygame.font.Font(None, 48).render(moves_string, True, (0,0,0), (255, 255, 255))
+        self._surface.blit(text, (15, 10))
+   
+        x = 10
+        y = 40
+
+        for move in self.model[0]:
             self.__draw_move(move, (x, y))
             x += self.ARROW_WIDTH
 
@@ -142,7 +148,67 @@ class GameView(View):
 
     def _build(self):
         self.maze_view = MazeView(self._surface, self.model.maze)
-        self.moves_view = MovesView(self._surface, self.model.moves)
+        self.moves_view = MovesView(self._surface, (self.model.moves, self.model.no_moves))
+
+    def draw_static(self):
+        self._surface.fill((255, 255, 255))
+        self.maze_view.draw_static()
+        self.moves_view.draw_static()
+
+    def draw_dynamic(self, position: Position):
+        self.maze_view.draw_dynamic(position)
+
+class StatsView(View):
+
+    def __init__(self, surface: pygame.Surface, results: AlgorithmStats):
+        super().__init__(surface, results)
+
+    def draw_static(self):
+
+        if self._model is None:
+            return
+        data = [
+            "Execution Time: {0}".format(self._model.time),
+            "Iterations: {0}".format(self._model.iterations),
+            "Solution Depth: {0}".format(len(self._model.solution_history)),
+            "Found Solution: {0}".format(self.__render_solution())
+        ]
+
+        y = 80
+        for sentence in data:
+            text = pygame.font.Font(None, 48).render(sentence, True, (0,0,0), (255, 255, 255))
+            self._surface.blit(text, (15, y))
+            y += 20
+
+    def __render_solution(self):
+        res_str = "({0}".format(self.__render_direction(self.__solution.solution_history[-1::][0][0]))
+        for direction in self.__solution.solution_history[-1::][0][1::]:
+            res_str += ", {0}".format(self.__render_direction(direction))
+        res_str += ")"
+        return res_str
+
+    @staticmethod
+    def __render_direction(direction):
+        if direction == Direction.UP:
+            return 'U'
+        elif direction == Direction.DOWN:
+            return 'D'
+        elif direction == Direction.LEFT:
+            return 'L'
+        elif direction == Direction.RIGHT:
+            return 'R'
+
+
+
+class IAView(View):
+
+    def __init__(self, surface: pygame.Surface, model: GameModel):
+        super().__init__(surface, model)
+
+    def _build(self):
+        self.maze_view = MazeView(self._surface, self.model.maze)
+        self.moves_view = MovesView(self._surface, (self.model.moves, self.model.no_moves))
+        self.results_view = StatsView(self, None)
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))

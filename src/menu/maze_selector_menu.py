@@ -9,7 +9,7 @@ from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
 from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
 from view.view_utils import surface
-from controller.game_controller import GameController
+from controller.game_controller import GameController, IAController
 
 
 class MazeSelectorMenu:
@@ -21,7 +21,7 @@ class MazeSelectorMenu:
             width=self.__window_size[0],
             title='Choose a maze',
             columns=2,
-            rows=3,
+            rows=4,
             theme=pygame_menu.themes.THEME_DARK
         )
         self.__mazes = [
@@ -87,10 +87,10 @@ class MazeSelectorMenu:
         if self.mazes[self.__cur_maze][0] == 'Custom Maze':
             next_menu = MazeCreationMenu(self.__window_size, self.__algorithms[self.__cur_algorithm]).maze_creation_menu
         else:
-            next_menu = ComputerSolvedMazeMenu(self.__window_size, self.algorithms[self.__cur_algorithm][1], self.mazes[self.__cur_maze][1]).computer_solved_maze_menu
+            next_menu = IAController(surface, self.mazes[self.__cur_maze][1], self.algorithms[self.__cur_algorithm][1]).run
         self.__maze_surface.fill((255, 255, 255))
         next_button = self.maze_selector_menu.add.button('Next', next_menu)
-        play_button = self.maze_selector_menu.add.button('Play', GameController(surface).run)
+        play_button = self.maze_selector_menu.add.button('Play', GameController(surface, self.mazes[self.__cur_maze][1]).run)
         maze_surface = self.maze_selector_menu.add.surface(self.__maze_surface)
         self.__widget_list = [
             self.__maze_widget,

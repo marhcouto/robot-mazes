@@ -43,14 +43,13 @@ class ComputerSolvedMazeMenu:
         self.__game_view.draw_dynamic(self.__game_model.maze.init_robot_pos)
 
     def __animate_robot(self):
-        print(pygame.display.get_surface().get_width())
-        GameController(self.__maze_surface).run()
-        # self.__game_view.draw_dynamic(Position(0, 1))
-        # self.__menu.update(pygame.event.get())
-        # self.__menu.draw(surface)
-        # pygame.display.update()
-        # pygame.time.wait(3000)
-        # self.__game_view.draw_dynamic(Position(0, 5))
+        # print(pygame.display.get_surface().get_width())
+        # GameController(self.__maze_surface).run()
+        self.__game_view.draw_dynamic(Position(0, 1))
+        pygame.time.wait(1000)
+        self.__maze_surface_widget.force_menu_surface_update()
+        self.__menu.draw(surface)
+        self.__game_view.draw_dynamic(Position(0, 5))
         # GameController.simulate(self.__game_model.maze, self.__solution.solution_state.moves,
         #     RobotAnimator(self.__maze_surface, self.__game_view.maze_view, self.__game_view))
 
