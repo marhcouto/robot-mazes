@@ -1,4 +1,6 @@
 import pygame_menu
+import pygame
+
 from menu.maze_selector_menu import MazeSelectorMenu
 
 

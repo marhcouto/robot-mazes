@@ -53,7 +53,7 @@ class MazeView(View):
 
     @staticmethod
     def load_robot():
-        return pygame.transform.scale(pygame.image.load('./assets/img/robot.png'), (50, 50))
+        return pygame.transform.scale(pygame.image.load('./src/assets/img/robot.png'), (50, 50))
 
     def draw_static(self):
         passage: MazeEdge = EdgeFactory.no_wall()
@@ -107,10 +107,10 @@ class MovesView(View):
         self.__load_images()
 
     def __load_images(self):
-        self.__up = pygame.transform.scale(pygame.image.load('./assets/img/arrow_up.png'), (75, 75))
-        self.__down = pygame.transform.scale(pygame.image.load('./assets/img/arrow_down.png'), (75, 75))
-        self.__left = pygame.transform.scale(pygame.image.load('./assets/img/arrow_left.png'), (75, 75))
-        self.__right = pygame.transform.scale(pygame.image.load('./assets/img/arrow_right.png'), (75, 75))
+        self.__up = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_up.png'), (75, 75))
+        self.__down = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_down.png'), (75, 75))
+        self.__left = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_left.png'), (75, 75))
+        self.__right = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_right.png'), (75, 75))
 
     def draw_static(self):
 

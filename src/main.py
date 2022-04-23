@@ -1,17 +1,12 @@
 import pygame
 from menu.main_menu import MainMenu
 from typing import Optional
+from view.view_utils import surface, WINDOW_SIZE
 
-WINDOW_SIZE = (1200, 760)
-
-surface: Optional['pygame'] = None
 
 
 def main():
-    global surface
-
     pygame.init()
-    surface = pygame.display.set_mode(WINDOW_SIZE)
     main_menu = MainMenu(WINDOW_SIZE).main_menu
 
     running = True
@@ -23,7 +18,10 @@ def main():
                 break
 
         if main_menu.is_enabled():
-            main_menu.mainloop(surface)
+            main_menu.update(events)
+            main_menu.draw(surface)
+            
+        pygame.display.update()
 
 
 if __name__ == '__main__':

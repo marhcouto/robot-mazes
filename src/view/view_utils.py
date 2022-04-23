@@ -1,3 +1,9 @@
+import pygame
+
+WINDOW_SIZE = (1200, 760)
+surface = pygame.display.set_mode(WINDOW_SIZE)
+
+
 class MazeEdge:
 
     def __init__(self, width, color):

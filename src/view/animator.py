@@ -10,7 +10,7 @@ class Animator:
         self._general_view = general_view
         self._surface = surface
 
-    def animate(self):
+    def animate(self, position: Position, direction: Direction):
         pass
 
 class RobotAnimator(Animator):

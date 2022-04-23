@@ -1,11 +1,15 @@
+from curses import window
 import pygame
 import pygame_menu
+
 import algorithms.algorithms
 import algorithms.heuristic
 from menu.maze_creation_menu import MazeCreationMenu
 from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
 from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
+from view.view_utils import surface
+from controller.game_controller import GameController
 
 
 class MazeSelectorMenu:
@@ -86,11 +90,13 @@ class MazeSelectorMenu:
             next_menu = ComputerSolvedMazeMenu(self.__window_size, self.algorithms[self.__cur_algorithm][1], self.mazes[self.__cur_maze][1]).computer_solved_maze_menu
         self.__maze_surface.fill((255, 255, 255))
         next_button = self.maze_selector_menu.add.button('Next', next_menu)
+        play_button = self.maze_selector_menu.add.button('Play', GameController(surface).run)
         maze_surface = self.maze_selector_menu.add.surface(self.__maze_surface)
         self.__widget_list = [
             self.__maze_widget,
             self.__algorithm_widget,
             next_button,
+            play_button,
             maze_surface
         ]
         if self.mazes[self.__cur_maze][1]:
