@@ -6,7 +6,7 @@ from view.view_utils import surface
 from algorithms.algorithm_stats import AlgorithmStats
 from controller.game_controller import GameController
 from view.animator import RobotAnimator
-from view.game_view import GameView
+from view.game_view import GameView, MazeView
 from model.game_model import Direction, Position, GameModel
 
 

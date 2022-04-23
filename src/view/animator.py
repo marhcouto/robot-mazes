@@ -1,6 +1,7 @@
 import pygame
 
 from view.game_view import GameView, View, MazeView
+from view.view_utils import SQUARE_WIDTH
 from model.game_model import Maze, Position, Direction
 
 
@@ -19,7 +20,7 @@ class RobotAnimator(Animator):
     def move_animation(self, position: Position, direction: Direction):
         current_pos: Position = self._animated_view.row_column_to_x_y(position)
 
-        for _ in range(MazeView.SQUARE_WIDTH // self._frames_per_move):
+        for _ in range(SQUARE_WIDTH // self._frames_per_move):
             if direction == Direction.UP:
                 current_pos = (current_pos[0], current_pos[1] - self._frames_per_move)
             elif direction == Direction.DOWN:
@@ -38,7 +39,7 @@ class RobotAnimator(Animator):
     def cancel_animation(self, position: Position, direction: Direction):
         current_pos: Position = self._animated_view.row_column_to_x_y(position)
 
-        for _ in range(MazeView.SQUARE_WIDTH // (3 * self._frames_per_move)):
+        for _ in range(SQUARE_WIDTH // (3 * self._frames_per_move)):
             if direction == Direction.UP:
                 current_pos = (current_pos[0], current_pos[1] - self._frames_per_move)
             elif direction == Direction.DOWN:
@@ -52,7 +53,7 @@ class RobotAnimator(Animator):
             pygame.time.delay(self._frames_per_move * 1)
             pygame.display.update()
 
-        for _ in range(MazeView.SQUARE_WIDTH // (3 * self._frames_per_move)):
+        for _ in range(SQUARE_WIDTH // (3 * self._frames_per_move)):
             if direction == Direction.UP:
                 current_pos = (current_pos[0], current_pos[1] + self._frames_per_move)
             elif direction == Direction.DOWN:

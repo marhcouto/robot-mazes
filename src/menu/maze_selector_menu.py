@@ -5,7 +5,6 @@ import pygame_menu
 import algorithms.algorithms
 import algorithms.heuristic
 from menu.maze_creation_menu import MazeCreationMenu
-from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
 from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
 from view.view_utils import surface

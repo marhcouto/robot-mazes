@@ -8,6 +8,7 @@ from view.animator import Animator, RobotAnimator
 from model.sample_mazes import SAMPLE_MAZE
 from view.game_view import GameView, IAView, MazeView
 from model.game_model import Direction, GameModel, Maze
+from view.view_utils import BUTTON_WIDTH
 
 class Controller:
 
@@ -94,7 +95,7 @@ class GameController(Controller):
 
     def __init__(self, surface: pygame.Surface, game_model: GameModel):
         super().__init__(surface, game_model)
-        self.__game_view: GameView = GameView(surface, (self._game_model, tuple()))
+        self.__game_view: GameView = GameView(surface, (game_model, []))
         self._robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
 
     def run(self):
@@ -113,28 +114,33 @@ class GameController(Controller):
                     quit()
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
-                self._moves.append(Direction.UP)
-            elif keys[pygame.K_DOWN]:
-                self._moves.append(Direction.DOWN)
-            elif keys[pygame.K_LEFT]:
-                self._moves.append(Direction.LEFT)
-            elif keys[pygame.K_RIGHT]:
-                self._moves.append(Direction.RIGHT)
-            elif keys[pygame.K_BACKSPACE]:
+            if len(self._moves) > 0 and keys[pygame.K_BACKSPACE]:
                 self._moves.pop()
-            elif keys[pygame.K_RETURN]:
-                if len(self._moves) == self._game_model.no_moves:
-                    self.simulate(self._moves)
-            elif keys[pygame.K_ESCAPE]:
+            if keys[pygame.K_ESCAPE]:
                 break
+            elif len(self._moves) < self._game_model.no_moves:
+                if keys[pygame.K_UP] or (pygame.mouse.get_pos()[0] > self.__game_view.buttons[0][0] and pygame.mouse.get_pos()[0] < self.__game_view.buttons[0][0] + BUTTON_WIDTH and pygame.mouse.get_pressed()[0]):
+                    self._moves.append(Direction.UP)
+                elif keys[pygame.K_DOWN]:
+                    self._moves.append(Direction.DOWN)
+                elif keys[pygame.K_LEFT]:
+                    self._moves.append(Direction.LEFT)
+                elif keys[pygame.K_RIGHT]:
+                    self._moves.append(Direction.RIGHT)
+            elif keys[pygame.K_RETURN] and len(self._moves) == self._game_model.no_moves:
+                self.simulate()
             else:
                 continue
 
-            self.__game_view.update(self._game_model)
+            self.__game_view.update((self._game_model, self._moves))
 
             if self._game_model.victory:
                 self.game_win()
+
+    def game_win(self):
+        self.__game_view.draw_win()
+        pygame.display.update()
+        super().game_win()
                 
 
 

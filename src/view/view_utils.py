@@ -3,6 +3,15 @@ import pygame
 WINDOW_SIZE = (1200, 760)
 surface = pygame.display.set_mode(WINDOW_SIZE)
 
+SQUARE_WIDTH = 80
+ARROW_WIDTH = 40
+ROBOT = pygame.transform.scale(pygame.image.load('./src/assets/img/robot.png'), (SQUARE_WIDTH, SQUARE_WIDTH))
+UP_ARROW = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_up.png'), (ARROW_WIDTH, ARROW_WIDTH))
+DOWN_ARROW = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_down.png'), (ARROW_WIDTH, ARROW_WIDTH))
+RIGHT_ARROW = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_left.png'), (ARROW_WIDTH, ARROW_WIDTH))
+LEFT_ARROW = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_right.png'), (ARROW_WIDTH, ARROW_WIDTH))
+BUTTON_WIDTH = 40
+
 
 class MazeEdge:
 
