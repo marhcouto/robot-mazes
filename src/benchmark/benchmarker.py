@@ -27,7 +27,7 @@ __algorithms = [
     ('greedy_max_dist', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.greatest_axis_distance)),
     ('a_star_max_dist', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.greatest_axis_distance)),
     ('greedy_max_dist_div_distance', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.greatest_axis_distance_div_dist)),
-    ('a_star_max_dist_distance', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.greatest_axis_distance_div_dist))
+    ('a_star_max_dist_div_distance', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.greatest_axis_distance_div_dist))
 ]
 
 def benchmark():
