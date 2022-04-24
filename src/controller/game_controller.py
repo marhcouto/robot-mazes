@@ -19,7 +19,7 @@ class Controller:
         pass
 
     def simulate(self):
-        positions = []
+        positions = set()
         robot_pos = self._game_model.maze.init_robot_pos
         maze = self._game_model.maze
         animator = self._robot_animator
@@ -27,7 +27,7 @@ class Controller:
         robot_path = [robot_pos]
         while True:
             init_cycle_pos = deepcopy(robot_pos)
-            positions.append(init_cycle_pos)
+            positions.add(init_cycle_pos)
             for direction in moves:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:

@@ -134,12 +134,12 @@ class GameModel:
         self.__victory = False
 
     def simulate(self, moves):
-        positions = []
+        positions = set()
         robot_pos = self.__maze.init_robot_pos
         robot_path = [robot_pos]
         while True:
             init_cycle_pos = deepcopy(robot_pos)
-            positions.append(init_cycle_pos)
+            positions.add(init_cycle_pos)
             for direction in moves:
                 if self.__maze.can_move(robot_pos, direction):
                     robot_pos = robot_pos.move(direction)
