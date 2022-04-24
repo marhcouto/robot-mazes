@@ -1,6 +1,7 @@
 from model.game_model import Maze, GameModel, Position
 
 SAMPLE_MAZE = GameModel (
+    0,
     Maze(
         4,
         Position(3, 0),
@@ -16,6 +17,7 @@ SAMPLE_MAZE = GameModel (
 )
 
 MAZE_13 = GameModel(
+    13,
     Maze(
         5,
         Position(4, 0),

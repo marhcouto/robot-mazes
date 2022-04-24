@@ -1,10 +1,28 @@
 from model.game_model import Direction
 from queue import Queue
 
+__shortest_path_cache = {}
+
+class MazeBFSState:
+    def __init__(self, position, parent):
+        self.position = position
+        self.parent = parent
+    
+    def __hash__(self):
+        return self.position.__hash__()
+    
+    def __eq__(self, __o):
+        return self.position == __o.position
 
 def manhattan_distance(game_model, state):
     final_pos = game_model.simulate(state.moves)[1][-1:][0]
     return abs(final_pos.row - game_model.maze.final_robot_pos.row) + abs(final_pos.column - game_model.maze.final_robot_pos.column)
+
+
+def manhattan_distance_div_dist(game_model, state):
+    if (not game_model in __shortest_path_cache):
+        __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
+    return (len(__shortest_path_cache[game_model]) - manhattan_distance(game_model, state)) / len(__shortest_path_cache[game_model])
 
 
 def generate_neighbour_positions(maze, cur_robot_pos):
@@ -15,37 +33,41 @@ def generate_neighbour_positions(maze, cur_robot_pos):
     return neigh
 
 
-def maze_bfs(maze):
+def __maze_bfs(maze):
+    print("Called shortest path")
     q = Queue()
     s = set()
-    starting_state = (maze.init_robot_pos, None)
-    cur_state = starting_state
+    starting_pos = MazeBFSState(maze.init_robot_pos, None)
+    cur_pos = starting_pos
 
-    q.put(starting_state)
-    s.add(starting_state)
+    q.put(starting_pos)
 
     while not q.empty():
-        cur_state = q.get()
-        s.add(cur_state)
-        if cur_state[0] == maze.final_robot_pos:
+        cur_pos = q.get()
+        print(cur_pos.position)
+        if cur_pos.position == maze.final_robot_pos:
             break
 
-        children = generate_neighbour_positions(maze, cur_state[0])
-        children = [child for child in map(lambda child_pos: (child_pos, cur_state), children)]
+        children = generate_neighbour_positions(maze, cur_pos.position)
+        children = [child for child in map(lambda child_pos: MazeBFSState(child_pos, cur_pos), children)]
         for child in children:
             if not (child in s):
+                s.add(child)
                 q.put(child)
 
     path = []
-    while cur_state[1]:
-        path.append(cur_state[0])
-        cur_state = cur_state[1]
-    path.append(cur_state[0])
+    while cur_pos.parent:
+        path.append(cur_pos.position)
+        cur_pos = cur_pos.parent
+    path.append(cur_pos.position)
     path.reverse()
     return path
 
 
-def shortest_path_heuristic(game_model, shortest_path, state):
+def shortest_path_heuristic(game_model, state):
+    if (not game_model in __shortest_path_cache):
+        __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
+    shortest_path = __shortest_path_cache[game_model]
     loop_path = game_model.simulate(state.moves)[1]
     common_positions = set()
     for position in shortest_path:

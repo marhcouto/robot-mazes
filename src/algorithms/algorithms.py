@@ -28,7 +28,6 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
         nodes_explored += 1
 
         cur_state = q.get()
-        s.add(cur_state)
 
         if game_model.simulate(cur_state.moves)[0]:
             break
@@ -36,6 +35,7 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
         children = cur_state.generate_all_children()
         for child in children:
             if not (child in s):
+                s.add(child)
                 q.put(child)
 
     end_time: int = perf_counter_ns()
@@ -64,14 +64,14 @@ def depth_first_search(game_model: GameModel, max_depth=math.inf) -> AlgorithmSt
         nodes_explored += 1
 
         cur_state = q.get()
+        if game_model.simulate(cur_state.moves)[0]:
+            break
         if cur_state.depth < max_depth:
-            s.add(cur_state)
-            if game_model.simulate(cur_state.moves)[0]:
-                break
             children = cur_state.generate_all_children()
             for child in children:
                 if not (child in s):
                     q.put(child)
+                    s.add(cur_state)
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
@@ -115,13 +115,14 @@ def greedy_search(game_model: GameModel, heuristic):
 
         nodes_explored += 1
         current_state = state_queue.pop()
-        visited_states.add(current_state)
+        print(current_state.moves)
         if game_model.simulate(current_state.moves)[0]:
             break
         new_valid_nodes = current_state.generate_all_children()
         for node in new_valid_nodes:
             if not (node in visited_states):
                 state_queue.insert(node)
+                visited_states.add(node)
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
@@ -140,13 +141,13 @@ def a_star_search(game_model: GameModel, heuristic):
     while not node_queue.empty():
         iter_num += 1
         cur_node = node_queue.pop()
-        visited_nodes[cur_node] = heuristic(game_model, cur_node) if not (cur_node.parent in visited_nodes) else visited_nodes[cur_node.parent] + heuristic(game_model, cur_node)
         if game_model.simulate(cur_node.moves)[0]:
             break
         next_nodes = cur_node.generate_all_children()
         for node in next_nodes:
             if node not in visited_nodes:
                 node_queue.insert_with_custom_value(visited_nodes[cur_node] + heuristic(game_model, node), node)
+                visited_nodes[node] = heuristic(game_model, node) if not (node.parent in visited_nodes) else visited_nodes[node.parent] + heuristic(game_model, node)
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000

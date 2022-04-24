@@ -3,6 +3,7 @@ import pygame
 from menu.main_menu import MainMenu
 from view.view_const import WINDOW_SIZE, SURFACE
 
+from model.game_model import Position
 
 
 def main():

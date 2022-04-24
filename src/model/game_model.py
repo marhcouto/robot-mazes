@@ -127,7 +127,8 @@ class Maze:
 
 
 class GameModel:
-    def __init__(self, maze: Maze, no_moves: int):
+    def __init__(self, id, maze: Maze, no_moves: int):
+        self.__id = id
         self.__no_moves: int = no_moves
         self.__maze: Maze = maze
         self.__victory = False
@@ -142,9 +143,14 @@ class GameModel:
                     robot_pos = robot_pos.move(direction)
                     robot_path.append(robot_pos)
                 if robot_pos == self.__maze.final_robot_pos:
+                    print('Found Solution in simulate')
                     return True, robot_path
             if init_cycle_pos == robot_pos:
                 return False, robot_path
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def no_moves(self):
@@ -167,3 +173,12 @@ class GameModel:
             self.__victory = False
         else:
             self.__victory = True
+
+    def __hash__(self) -> int:
+        return self.__id
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.__id == __o.id
+
+    def __ne__(self, __o: object) -> bool:
+        return not (self == __o)

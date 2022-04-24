@@ -10,7 +10,7 @@ class State:
         self.__tuple_of_moves = tuple_of_moves
         self.__parent = parent
         if not parent:
-            self.__depth = 0
+            self.__depth = 1
         else:
             self.__depth = parent.depth + 1
         self.__size = len(tuple_of_moves)

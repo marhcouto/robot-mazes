@@ -31,16 +31,10 @@ class MazeSelectorMenu:
             ('Iterative Deepening DFS', algorithms.algorithms.iterative_deepening_search),
             ('Greedy(Manhattan)', lambda game_state: algorithms.algorithms.greedy_search(game_state,algorithms.heuristic.manhattan_distance)),
             ('A*(Manhattan)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.manhattan_distance)),
-            ('Greedy(Shortest Path)', lambda game_state: algorithms.algorithms.greedy_search(
-                    game_state, lambda model, state: algorithms.heuristic.shortest_path_heuristic(
-                        model, algorithms.heuristic.maze_bfs(game_state.maze), state)
-                )
-            ),
-            ('A*(Shortest Path)', lambda game_state: algorithms.algorithms.a_star_search(
-                    game_state, lambda model, state: algorithms.heuristic.shortest_path_heuristic(
-                        model, algorithms.heuristic.maze_bfs(game_state.maze), state)
-                )
-            )
+            ('Greedy(Manhattan/Distance)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.manhattan_distance_div_dist)),
+            ('A*(Manhattan/Distance)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.manhattan_distance_div_dist)),
+            ('Greedy(Shortest Path)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.shortest_path_heuristic)),
+            ('A*(Shortest Path)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.shortest_path_heuristic))
         ]
         self.__cur_maze = 0
         self.__cur_algorithm = 0
