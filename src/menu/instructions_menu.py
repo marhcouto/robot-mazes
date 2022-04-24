@@ -1,8 +1,6 @@
 import pygame_menu
-import pygame
 
-from menu.maze_selector_menu import MazeSelectorMenu
-from view.view_const import SURFACE, THEME
+from view.view_const import THEME
 
 
 class IntructionsMenu:
@@ -13,7 +11,7 @@ class IntructionsMenu:
             title='Instructions',
             theme=THEME
         )
-        self.__menu.add.image('./src/assets/img/description.png', scale=(1, 1))
+        self.__menu.add.image('./assets/img/description.png', scale=(1, 1))
         
     @property
     def menu(self):

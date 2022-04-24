@@ -3,9 +3,9 @@ import pygame_menu
 
 import algorithms.algorithms
 import algorithms.heuristic
-from model.sample_mazes import SAMPLE_MAZE, MAZE_13
+from model.sample_mazes import IMPOSSIBLE_LEVEL, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, SAMPLE_LEVEL, LEVEL_13
 from view.game_view import MazeView
-from view.view_const import BACK_SPACE, BACKGROUND, SURFACE, THEME
+from view.view_const import BACKGROUND, SURFACE, THEME
 from controller.game_controller import GameController, IAController
 
 
@@ -22,8 +22,14 @@ class MazeSelectorMenu:
             theme=THEME
         )
         self.__mazes = [
-            ('Sample(4x4) 4', SAMPLE_MAZE),
-            ('Maze(13) 6', MAZE_13)
+            ('Sample(4x4) 4', SAMPLE_LEVEL),
+            ('Level 1', LEVEL_1),
+            ('Level 2', LEVEL_2),
+            ('Level 3', LEVEL_3),
+            ('Level 4', LEVEL_4),
+            ('Level 5', LEVEL_5),
+            ('Level 13', LEVEL_13),
+            ('Impossible level', IMPOSSIBLE_LEVEL)
         ]
         self.__algorithms = [
             ('Breadth-First Search', algorithms.algorithms.breadth_first_search),
