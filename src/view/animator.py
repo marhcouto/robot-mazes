@@ -66,18 +66,3 @@ class RobotAnimator(Animator):
             self._surface.blit(ROBOT, current_pos)
             pygame.time.delay(self._frames_per_move * 1)
             pygame.display.update()
-
-    # def movement(self, current_position: tuple, direction: Direction, duration: int):
-    #     for _ in range(duration):
-    #         if direction == Direction.UP:
-    #             current_pos = (current_pos[0], current_pos[1] - self._frames_per_move)
-    #         elif direction == Direction.DOWN:
-    #             current_pos = (current_pos[0], current_pos[1] + self._frames_per_move)
-    #         elif direction == Direction.LEFT:
-    #             current_pos = (current_pos[0] - self._frames_per_move, current_pos[1])
-    #         elif direction == Direction.RIGHT:
-    #             current_pos = (current_pos[0] + self._frames_per_move, current_pos[1])
-    #         self._general_view.draw_static()
-    #         self._surface.blit(ROBOT, current_pos)
-    #         pygame.time.delay(self._frames_per_move * 10)
-    #         pygame.display.update()

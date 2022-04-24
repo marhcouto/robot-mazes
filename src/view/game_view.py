@@ -3,7 +3,7 @@ from algorithms.algorithm_stats import AlgorithmStats
 
 from model.game_model import Maze, Position, Direction
 from view.view_utils import EdgeFactory, MazeEdge
-from view.view_const import BACK_SPACE, ESC, ENTER, ROBOT, TIPS, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
+from view.view_const import INFO, BACK_SPACE, ESC, ENTER, ROBOT, TIPS, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
 
 class View:
     def __init__(self, surface: pygame.Surface, model = None):
@@ -174,8 +174,8 @@ class GameView(View):
     def _build(self):
         self.maze_view = MazeView(self._surface, self.model[0].maze)
         self.moves_view = MovesView(self._surface, (self.model[1], self.model[0].no_moves))
-        self.buttons = [(400, 600), (450, 600), (500, 600), (550, 600), (700, 600), (750, 600), (1100, 20), (1000, 20)]
-        self.button_widths = [40, 40, 40, 40, 40, 40, 60, 60]
+        self.buttons = [(400, 600), (450, 600), (500, 600), (550, 600), (700, 600), (750, 600), (1100, 20), (1000, 20), (900, 20)]
+        self.button_widths = [40, 40, 40, 40, 40, 40, 60, 60, 60]
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))
@@ -197,8 +197,8 @@ class GameView(View):
         inside_color_normal = (250, 250, 200)
         color_normal = (50, 50, 50)
         color_hover = (0, 0, 0)
-        symbols = [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BACK_SPACE, ENTER, ESC, TIPS]
-        for i in range(8):
+        symbols = [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BACK_SPACE, ENTER, ESC, TIPS, INFO]
+        for i in range(9):
             if self.mouse_in_button(i):
                 pygame.draw.rect(self._surface, inside_color_hover, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), border_radius = 5)
                 self._surface.blit(symbols[i], self.buttons[i])
@@ -208,14 +208,39 @@ class GameView(View):
                 self._surface.blit(symbols[i], self.buttons[i]) 
                 pygame.draw.rect(self._surface, color_normal, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), width = 3, border_radius = 5)
         
-
-
     def mouse_in_button(self, i):
         buttons = self.buttons
         mouse_pos = pygame.mouse.get_pos()
         if mouse_pos[0] > buttons[i][0] and mouse_pos[0] < buttons[i][0] + self.button_widths[i] and mouse_pos[1] > buttons[i][1] and mouse_pos[1] < buttons[i][1] + self.button_widths[i]:
             return True
         return False
+
+    def tips(self, tip: str):
+        text = pygame.font.Font(None, 30).render(tip, True, (0,0,0), (255, 255, 255))
+        self._surface.blit(text, (805, 105))
+        pygame.draw.rect(self._surface, (0, 0, 0), pygame.Rect(800, 100, 300, 100), width=2, border_radius=10)
+
+    def instructions(self):
+        text = []
+        text.append(pygame.font.Font(None, 30).render(" - Arrow keys or buttons to", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render("choose directions.", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render(" - Backspace or button to", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render("remove them.", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render(" - Enter or button to make", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render("the robot cycle.", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render(" - Escape or button to exit", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render("to menu.", True, (0,0,0), (255, 255, 255)))
+        text.append(pygame.font.Font(None, 30).render(" - I or lightbulb button for tips.", True, (0,0,0), (255, 255, 255)))
+        y = 105
+        for sentence in text:
+            self._surface.blit(sentence, (805, y))
+            y += 30
+
+        
+        pygame.draw.rect(self._surface, (0, 0, 0), pygame.Rect(800, 100, 350, 300), width=2, border_radius=10)
+
+
+
         
 
 

@@ -15,6 +15,7 @@ LEFT_ARROW = pygame.transform.scale(pygame.image.load('./src/assets/img/arrow_ri
 ENTER = pygame.transform.scale(pygame.image.load('./src/assets/img/enter.png'), (ARROW_WIDTH, ARROW_WIDTH))
 ESC = pygame.transform.scale(pygame.image.load('./src/assets/img/esc.png'), (60, 60))
 TIPS = pygame.transform.scale(pygame.image.load('./src/assets/img/light.png'), (60, 60))
+INFO = pygame.transform.scale(pygame.image.load('./src/assets/img/info.png'), (60, 60))
 BUTTON_WIDTH = 40
 THEME = pygame_menu.Theme(background_color=(0, 0, 0),
-                title_background_color=(4, 47, 126))
+                title_background_color=(50, 0, 150))

@@ -112,19 +112,23 @@ class GameController(Controller):
                     quit()
 
             keys = pygame.key.get_pressed()
-            key_vals = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_BACKSPACE, pygame.K_RETURN, pygame.K_ESCAPE, pygame.K_t]
+            key_vals = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_BACKSPACE, pygame.K_RETURN, pygame.K_ESCAPE, pygame.K_t, pygame.K_i]
             directions = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT]
-            for i in range(8):
+            for i in range(9):
                 if keys[key_vals[i]] or (self.__game_view.mouse_in_button(i) and pygame.mouse.get_pressed()[0]):
                     if i < 4 and len(self._moves) < self._game_model.no_moves:
                         self._moves.append(directions[i])
                         self.__game_view.update((self._game_model, self._moves))
-                    if i == 4 and len(self._moves) > 0:
+                    elif i == 4 and len(self._moves) > 0:
                         self._moves.pop()
-                    if i == 5 and len(self._moves) == self._game_model.no_moves:
+                    elif i == 5 and len(self._moves) == self._game_model.no_moves:
                         self.simulate()
-                    if i == 6:
+                    elif i == 6:
                         return
+                    elif i == 7:
+                        self.tips()
+                    elif i == 8:
+                        self.instructions()
 
             if self._game_model.victory:
                 self.game_win()
@@ -137,12 +141,33 @@ class GameController(Controller):
         super().game_win()
 
     def tips(self):
-        index = 0
-        if self.__results is None:
-            self.__results: AlgorithmStats = self._algorithm(self._game_model)
-        for i in range(len(self._moves)):
-            if self._moves[i] != self.__results.solution_state.moves[i]:
-                print("TIP")
+        # index = 0
+        # if self.__results is None:
+        #     self.__results: AlgorithmStats = self._algorithm(self._game_model)
+        # for i in range(len(self._moves)):
+        #     if self._moves[i] != self.__results.solution_state.moves[i]:
+        #         print('TIPS')
+        #         self.__game_view.tips()
+        self.__game_view.tips("Brother from another mother")
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE] or keys[pygame.K_BACKSPACE] or keys[pygame.K_RETURN]:
+                return
+
+    def instructions(self):
+        self.__game_view.instructions()
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE] or keys[pygame.K_BACKSPACE] or keys[pygame.K_RETURN]:
+                return
 
                 
 
