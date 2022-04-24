@@ -32,7 +32,6 @@ class Controller:
                         quit()
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_BACKSPACE] or keys[pygame.K_ESCAPE]:
-                    print("Stop simulating")
                     return
                 
                 if maze.can_move(robot_pos, direction):
@@ -148,6 +147,7 @@ class GameController(Controller):
         for i in range(len(self._moves)):
             if self._moves[i] != self.__results.solution_state.moves[i]:
                 wrong = True
+                break
             index = i + 1
         if wrong:
             self.__game_view.tips("Change the direction number {}".format(index))

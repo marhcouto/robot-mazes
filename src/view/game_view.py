@@ -3,7 +3,7 @@ from algorithms.algorithm_stats import AlgorithmStats
 
 from model.game_model import Maze, Position, Direction
 from view.view_utils import EdgeFactory, MazeEdge
-from view.view_const import BACKGROUND, COLOR, INFO, BACK_SPACE, ESC, ENTER, ROBOT, TIPS, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
+from view.view_const import GREEN, BLUE, BACKGROUND, COLOR, INFO, BACK_SPACE, ESC, ENTER, RED, ROBOT, TIPS, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
 
 class View:
     def __init__(self, surface: pygame.Surface, model = None):
@@ -48,13 +48,15 @@ class MazeView(View):
         passage: MazeEdge = EdgeFactory.no_wall()
         wall: MazeEdge = EdgeFactory.real_wall()
 
+        # pygame.draw.rect(self._surface, COLOR, pygame.Rect(self.__left, MazeView.TOP, SQUARE_WIDTH * self.model.size, SQUARE_WIDTH * self.model.size))
+
         # Starting house
         (initial_x, initial_y) = (self.model.init_robot_pos.column * SQUARE_WIDTH + self.__left, self.model.init_robot_pos.row * SQUARE_WIDTH + MazeView.TOP)
-        pygame.draw.rect(self._surface, (50, 0, 150), pygame.Rect(initial_x, initial_y, SQUARE_WIDTH, SQUARE_WIDTH))
+        pygame.draw.rect(self._surface, BLUE, pygame.Rect(initial_x, initial_y, SQUARE_WIDTH, SQUARE_WIDTH))
 
         # Ending house
         (final_x, final_y) = (self.model.final_robot_pos.column * SQUARE_WIDTH + self.__left, self.model.final_robot_pos.row * SQUARE_WIDTH + MazeView.TOP)
-        pygame.draw.rect(self._surface, (50, 150, 150), pygame.Rect(final_x, final_y, SQUARE_WIDTH, SQUARE_WIDTH))
+        pygame.draw.rect(self._surface, GREEN, pygame.Rect(final_x, final_y, SQUARE_WIDTH, SQUARE_WIDTH))
 
         # Horizontal Lines
         for i in range(self.model.size):
@@ -174,7 +176,7 @@ class GameView(View):
     def _build(self):
         self.maze_view = MazeView(self._surface, self.model[0].maze)
         self.moves_view = MovesView(self._surface, (self.model[1], self.model[0].no_moves))
-        self.buttons = [(400, 600), (450, 600), (500, 600), (550, 600), (700, 600), (750, 600), (1100, 20), (1000, 20), (900, 20)]
+        self.buttons = [(400, 650), (450, 650), (500, 650), (550, 650), (700, 650), (750, 650), (1100, 20), (1000, 20), (900, 20)]
         self.button_widths = [40, 40, 40, 40, 40, 40, 60, 60, 60]
 
     def draw_static(self):
@@ -187,16 +189,15 @@ class GameView(View):
         self.maze_view.draw_dynamic(position)
 
     def draw_win(self):
-        surface_w, surface_h = self._surface.get_size()
-        # pygame.draw.rect(self._surface, (255, 200, 255), pygame.Rect((surface_w - 400) // 2, 200, 400, 100), border_radius=50)
-        text = pygame.font.Font(None, 64).render("Maze Complete!", True, (255,0,50), BACKGROUND)
+        surface_w, _ = self._surface.get_size()
+        text = pygame.font.Font(None, 64).render("Maze Complete!", True, RED, COLOR)
         self._surface.blit(text, ((surface_w - text.get_size()[0]) // 2, 200))
 
     def draw_buttons(self):
-        inside_color_hover = (150, 150, 100)
-        inside_color_normal = (250, 250, 200)
-        color_normal = (50, 50, 50)
-        color_hover = COLOR
+        inside_color_hover = GREEN
+        inside_color_normal = BLUE
+        color_normal = COLOR
+        color_hover = (200, 200, 200)
         symbols = [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BACK_SPACE, ENTER, ESC, TIPS, INFO]
         for i in range(9):
             if self.mouse_in_button(i):
@@ -217,8 +218,8 @@ class GameView(View):
 
     def tips(self, tip: str):
         text = pygame.font.Font(None, 30).render(tip, True, COLOR, BACKGROUND)
-        self._surface.blit(text, (805, 105))
-        pygame.draw.rect(self._surface, COLOR, pygame.Rect(800, 100, 350, 100), width=2, border_radius=10)
+        self._surface.blit(text, (825, 105))
+        pygame.draw.rect(self._surface, COLOR, pygame.Rect(820, 100, 350, 100), width=2, border_radius=10)
 
     def instructions(self):
         text = []
@@ -233,11 +234,11 @@ class GameView(View):
         text.append(pygame.font.Font(None, 30).render(" - I or lightbulb button for tips.", True, COLOR, BACKGROUND))
         y = 105
         for sentence in text:
-            self._surface.blit(sentence, (805, y))
+            self._surface.blit(sentence, (825, y))
             y += 30
 
         
-        pygame.draw.rect(self._surface, COLOR, pygame.Rect(800, 100, 350, 300), width=2, border_radius=10)
+        pygame.draw.rect(self._surface, COLOR, pygame.Rect(820, 100, 350, 300), width=2, border_radius=10)
 
 
 

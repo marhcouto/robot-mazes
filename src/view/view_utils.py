@@ -1,4 +1,4 @@
-from view.view_const import COLOR
+from view.view_const import COLOR, GREY
 
 class MazeEdge:
 
@@ -22,4 +22,4 @@ class EdgeFactory:
 
     @staticmethod
     def no_wall():
-        return MazeEdge(1, (100, 100, 100))
+        return MazeEdge(1, GREY)

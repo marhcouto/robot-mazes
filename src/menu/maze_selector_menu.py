@@ -5,7 +5,7 @@ import algorithms.algorithms
 import algorithms.heuristic
 from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
-from view.view_const import SURFACE, THEME
+from view.view_const import BACK_SPACE, BACKGROUND, SURFACE, THEME
 from controller.game_controller import GameController, IAController
 
 
@@ -82,7 +82,7 @@ class MazeSelectorMenu:
         )
         ia_menu = IAController(SURFACE, self.mazes[self.__cur_maze][1], self.algorithms[self.__cur_algorithm][1]).run
         play_menu = GameController(SURFACE, self.mazes[self.__cur_maze][1], self.algorithms[self.__cur_algorithm][1]).run
-        self.__maze_surface.fill((255, 255, 255))
+        self.__maze_surface.fill(BACKGROUND)
         next_button = self.maze_selector_menu.add.button('Simulate', ia_menu)
         play_button = self.maze_selector_menu.add.button('Play', play_menu)
         maze_surface = self.maze_selector_menu.add.surface(self.__maze_surface)
