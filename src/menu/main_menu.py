@@ -13,7 +13,7 @@ class MainMenu:
             title='Main Menu',
             theme=THEME
         )
-        self.__main_menu.add.image('./src/assets/img/robot_image.png', scale=(0.5, 0.5))
+        self.__main_menu.add.image('./assets/img/robot_image.png', scale=(0.5, 0.5))
         self.__main_menu.add.button('Choose Map', MazeSelectorMenu(window_size).maze_selector_menu)
         self.__main_menu.add.button('Instructions', IntructionsMenu(window_size).menu)
         self.__main_menu.add.button('Quit', pygame_menu.events.EXIT)
