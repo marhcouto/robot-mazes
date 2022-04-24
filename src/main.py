@@ -2,8 +2,7 @@ import pygame
 
 from menu.main_menu import MainMenu
 from view.view_const import WINDOW_SIZE, SURFACE
-
-from model.game_model import Position
+import benchmark.benchmarker
 
 
 def main():
@@ -26,4 +25,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    benchmark.benchmarker.benchmark()
