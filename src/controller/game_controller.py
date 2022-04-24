@@ -19,6 +19,7 @@ class Controller:
         pass
 
     def simulate(self):
+        positions = []
         robot_pos = self._game_model.maze.init_robot_pos
         maze = self._game_model.maze
         animator = self._robot_animator
@@ -26,6 +27,7 @@ class Controller:
         robot_path = [robot_pos]
         while True:
             init_cycle_pos = deepcopy(robot_pos)
+            positions.append(init_cycle_pos)
             for direction in moves:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -45,7 +47,7 @@ class Controller:
                     self._game_model.toggle_won()
                     return
                 pygame.time.delay(100)
-            if init_cycle_pos == robot_pos:
+            if robot_pos in positions:
                 # Cyclycal
                 return
             pygame.time.wait(300)
