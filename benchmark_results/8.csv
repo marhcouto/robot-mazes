@@ -1,0 +1,14 @@
+Algorithm,Execution Time,Iterations,Solution Depth
+bfs,920.6686,3992.0,7.0
+dfs,516.31348,1868.0,1868.0
+iddfs,10661.93548,80064.0,9.0
+greedy_manhattan,44.7021,21.0,10.0
+a_star_manhattan,533.72418,347.0,8.0
+greedy_manhattan_div_distance,41.60634,21.0,10.0
+a_star_manhattan_div_distance,335.62183999999996,195.0,8.0
+greedy_shortest_path,41.365120000000005,17.0,8.0
+a_star_shortest_path,526.20926,276.0,7.0
+greedy_max_dist,74.94296,39.0,12.0
+a_star_max_dist,548.01256,428.0,8.0
+greedy_max_dist_div_distance,76.1867,39.0,12.0
+a_star_max_dist_div_distance,440.82696,324.0,8.0
