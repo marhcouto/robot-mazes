@@ -130,7 +130,7 @@ class GameModel:
     def __init__(self, maze: Maze, no_moves: int):
         self.__no_moves: int = no_moves
         self.__maze: Maze = maze
-        self.__moves = tuple()
+        self.__victory = False
 
     def simulate(self, moves):
         robot_pos = self.__maze.init_robot_pos
@@ -139,26 +139,12 @@ class GameModel:
             init_cycle_pos = deepcopy(robot_pos)
             for direction in moves:
                 if self.__maze.can_move(robot_pos, direction):
-                    if robot_pos.move(direction) == self.__maze.final_robot_pos:
-                        robot_path.append(robot_pos.move(direction))
-                        return True, robot_path
                     robot_pos = robot_pos.move(direction)
                     robot_path.append(robot_pos)
+                if robot_pos == self.__maze.final_robot_pos:
+                    return True, robot_path
             if init_cycle_pos == robot_pos:
                 return False, robot_path
-
-    def add_move(self, direction: Direction):
-        if len(self.__moves) >= self.__no_moves:
-            return None
-        else:
-            self.__moves = self.__moves + (direction, )
-            return direction
-
-    def pop_move(self):
-        if len(self.__moves) <= 0:
-            return None
-        self.__moves = self.__moves[:-1]
-        return self.__moves
 
     @property
     def no_moves(self):
@@ -169,9 +155,15 @@ class GameModel:
         self.__no_moves = new_no_moves
 
     @property
-    def moves(self):
-        return self.__moves
-
-    @property
     def maze(self):
         return self.__maze
+
+    @property
+    def victory(self):
+        return self.__victory
+
+    def toggle_won(self):
+        if self.__victory:
+            self.__victory = False
+        else:
+            self.__victory = True

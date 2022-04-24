@@ -1,11 +1,12 @@
 import pygame
 import pygame_menu
+
 import algorithms.algorithms
 import algorithms.heuristic
-from menu.maze_creation_menu import MazeCreationMenu
-from menu.computer_solved_maze_menu import ComputerSolvedMazeMenu
 from model.sample_mazes import SAMPLE_MAZE, MAZE_13
 from view.game_view import MazeView
+from view.view_const import BACK_SPACE, BACKGROUND, SURFACE, THEME
+from controller.game_controller import GameController, IAController
 
 
 class MazeSelectorMenu:
@@ -17,13 +18,12 @@ class MazeSelectorMenu:
             width=self.__window_size[0],
             title='Choose a maze',
             columns=2,
-            rows=3,
-            theme=pygame_menu.themes.THEME_DARK
+            rows=4,
+            theme=THEME
         )
         self.__mazes = [
             ('Sample(4x4) 4', SAMPLE_MAZE),
-            ('Maze(13) 6', MAZE_13),
-            ('Custom Maze', None)
+            ('Maze(13) 6', MAZE_13)
         ]
         self.__algorithms = [
             ('Breadth-First Search', algorithms.algorithms.breadth_first_search),
@@ -80,17 +80,17 @@ class MazeSelectorMenu:
             onchange=lambda _, __: self.__change_algorithm(),
             default=self.__cur_algorithm
         )
-        if self.mazes[self.__cur_maze][0] == 'Custom Maze':
-            next_menu = MazeCreationMenu(self.__window_size, self.__algorithms[self.__cur_algorithm]).maze_creation_menu
-        else:
-            next_menu = ComputerSolvedMazeMenu(self.__window_size, self.algorithms[self.__cur_algorithm][1], self.mazes[self.__cur_maze][1]).computer_solved_maze_menu
-        self.__maze_surface.fill((255, 255, 255))
-        next_button = self.maze_selector_menu.add.button('Next', next_menu)
+        ia_menu = IAController(SURFACE, self.mazes[self.__cur_maze][1], self.algorithms[self.__cur_algorithm][1]).run
+        play_menu = GameController(SURFACE, self.mazes[self.__cur_maze][1], self.algorithms[self.__cur_algorithm][1]).run
+        self.__maze_surface.fill(BACKGROUND)
+        next_button = self.maze_selector_menu.add.button('Simulate', ia_menu)
+        play_button = self.maze_selector_menu.add.button('Play', play_menu)
         maze_surface = self.maze_selector_menu.add.surface(self.__maze_surface)
         self.__widget_list = [
             self.__maze_widget,
             self.__algorithm_widget,
             next_button,
+            play_button,
             maze_surface
         ]
         if self.mazes[self.__cur_maze][1]:

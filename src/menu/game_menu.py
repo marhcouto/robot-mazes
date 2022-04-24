@@ -4,7 +4,8 @@ from view.game_view import GameView
 from model.game_model import Direction
 
 
-class ComputerSolvedMazeMenu:
+
+class GameMenu:
     def __init__(self, window_size, algorithm, game_model):
         self.__window_size = window_size
         self.__game_model = game_model
