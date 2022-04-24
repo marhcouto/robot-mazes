@@ -1,9 +1,9 @@
 import pygame
 from algorithms.algorithm_stats import AlgorithmStats
 
-from model.game_model import Maze, Position, Direction, GameModel
-from view.view_utils import ROBOT, EdgeFactory, MazeEdge, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
-
+from model.game_model import Maze, Position, Direction
+from view.view_utils import EdgeFactory, MazeEdge
+from view.view_const import BACK_SPACE, ESC, ENTER, ROBOT, TIPS, SQUARE_WIDTH, ARROW_WIDTH, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BUTTON_WIDTH
 
 class View:
     def __init__(self, surface: pygame.Surface, model = None):
@@ -28,7 +28,7 @@ class View:
 
 class MazeView(View):
 
-    TOP = 50
+    TOP = 100
 
     def __init__(self, surface: pygame.Surface, maze: Maze):
         super().__init__(surface, maze)
@@ -174,7 +174,8 @@ class GameView(View):
     def _build(self):
         self.maze_view = MazeView(self._surface, self.model[0].maze)
         self.moves_view = MovesView(self._surface, (self.model[1], self.model[0].no_moves))
-        self.buttons = [(400, 600), (500, 600), (600, 600), (700, 600), (800, 600)]
+        self.buttons = [(400, 600), (450, 600), (500, 600), (550, 600), (700, 600), (750, 600), (1100, 20), (1000, 20)]
+        self.button_widths = [40, 40, 40, 40, 40, 40, 60, 60]
 
     def draw_static(self):
         self._surface.fill((255, 255, 255))
@@ -187,18 +188,35 @@ class GameView(View):
 
     def draw_win(self):
         surface_w, surface_h = self._surface.get_size()
-        pygame.draw.rect(self._surface, (0, 255, 255), pygame.Rect(200, 200, 300, 100), width = 100, border_radius = 10)
+        # pygame.draw.rect(self._surface, (255, 200, 255), pygame.Rect((surface_w - 400) // 2, 200, 400, 100), border_radius=50)
         text = pygame.font.Font(None, 64).render("Maze Complete!", True, (255,0,50), (255, 255, 255))
-        # self._surface.blit(text, (200, 200))
+        self._surface.blit(text, ((surface_w - text.get_size()[0]) // 2, 200))
 
     def draw_buttons(self):
-        symbols = [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]
-        for i in range(4):
-            self._surface.blit(symbols[i], self.buttons[i])
-            pygame.draw.rect(self._surface, (0, 0, 0), pygame.Rect(self.buttons[i][0], self.buttons[i][1], BUTTON_WIDTH, BUTTON_WIDTH), width = 3, border_radius = 5)
-        self._surface.blit(pygame.font.Font(None, 22).render("DEL", True, (0,0,0), (255, 255, 255)), (self.buttons[4][0] + 5, self.buttons[4][1] + 5))
-        pygame.draw.rect(self._surface, (0, 0, 0), pygame.Rect(self.buttons[4][0], self.buttons[4][1], BUTTON_WIDTH, BUTTON_WIDTH), width = 3, border_radius = 5)
+        inside_color_hover = (150, 150, 100)
+        inside_color_normal = (250, 250, 200)
+        color_normal = (50, 50, 50)
+        color_hover = (0, 0, 0)
+        symbols = [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, BACK_SPACE, ENTER, ESC, TIPS]
+        for i in range(8):
+            if self.mouse_in_button(i):
+                pygame.draw.rect(self._surface, inside_color_hover, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), border_radius = 5)
+                self._surface.blit(symbols[i], self.buttons[i])
+                pygame.draw.rect(self._surface, color_hover, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), width = 3, border_radius = 5)
+            else:
+                pygame.draw.rect(self._surface, inside_color_normal, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), border_radius = 5)   
+                self._surface.blit(symbols[i], self.buttons[i]) 
+                pygame.draw.rect(self._surface, color_normal, pygame.Rect(self.buttons[i][0], self.buttons[i][1], self.button_widths[i], self.button_widths[i]), width = 3, border_radius = 5)
+        
 
+
+    def mouse_in_button(self, i):
+        buttons = self.buttons
+        mouse_pos = pygame.mouse.get_pos()
+        if mouse_pos[0] > buttons[i][0] and mouse_pos[0] < buttons[i][0] + self.button_widths[i] and mouse_pos[1] > buttons[i][1] and mouse_pos[1] < buttons[i][1] + self.button_widths[i]:
+            return True
+        return False
+        
 
 
 class IAView(View):

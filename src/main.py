@@ -1,7 +1,7 @@
 import pygame
+
 from menu.main_menu import MainMenu
-from typing import Optional
-from view.view_utils import surface, WINDOW_SIZE
+from view.view_const import WINDOW_SIZE, SURFACE
 
 
 
@@ -19,7 +19,7 @@ def main():
 
         if main_menu.is_enabled():
             main_menu.update(events)
-            main_menu.draw(surface)
+            main_menu.draw(SURFACE)
             
         pygame.display.update()
 

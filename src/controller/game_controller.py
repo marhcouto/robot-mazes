@@ -1,19 +1,16 @@
 import pygame
 from copy import deepcopy
 
-import pygame_menu
 from algorithms.algorithm_stats import AlgorithmStats
-
-from view.animator import Animator, RobotAnimator
-from model.sample_mazes import SAMPLE_MAZE
-from view.game_view import GameView, IAView, MazeView
-from model.game_model import Direction, GameModel, Maze
-from view.view_utils import BUTTON_WIDTH
+from view.animator import RobotAnimator
+from view.game_view import GameView, IAView
+from model.game_model import Direction, GameModel
 
 class Controller:
 
-    def __init__(self, surface: pygame.Surface, game_model: GameModel):
+    def __init__(self, surface: pygame.Surface, game_model: GameModel, algorithm):
         self._surface = surface
+        self._algorithm = algorithm
         self._game_model = game_model
         self._robot_animator = None
         self._moves = []
@@ -46,7 +43,7 @@ class Controller:
                     animator.cancel_animation(robot_pos, direction)
                 if robot_pos == maze.final_robot_pos:
                     # Win
-                    self._game_model.game_won()
+                    self._game_model.toggle_won()
                     return
                 pygame.time.delay(100)
             if init_cycle_pos == robot_pos:
@@ -62,6 +59,7 @@ class Controller:
                     quit()
             keys = pygame.key.get_pressed()
             if keys[pygame.K_ESCAPE] or keys[pygame.K_BACKSPACE] or keys[pygame.K_RETURN]:
+                self._game_model.toggle_won()
                 return
 
 
@@ -69,14 +67,13 @@ class Controller:
 class IAController(Controller):
 
     def __init__(self, surface: pygame.Surface, game_model: GameModel, algorithm):
-        super().__init__(surface, game_model)
+        super().__init__(surface, game_model, algorithm)
         self.__ia_view = IAView(surface, (game_model, [], AlgorithmStats(0, 0, None)))
         self._robot_animator: RobotAnimator = RobotAnimator(surface, self.__ia_view.maze_view, self.__ia_view)
-        self.__algorithm = algorithm
 
     def run(self):
 
-        results: AlgorithmStats = self.__algorithm(self._game_model)
+        results: AlgorithmStats = self._algorithm(self._game_model)
         self._moves = results.solution_state.moves
         
         self.__ia_view.update((self._game_model, self._moves, results))
@@ -93,10 +90,11 @@ class IAController(Controller):
 
 class GameController(Controller):
 
-    def __init__(self, surface: pygame.Surface, game_model: GameModel):
-        super().__init__(surface, game_model)
+    def __init__(self, surface: pygame.Surface, game_model: GameModel, algorithm):
+        super().__init__(surface, game_model, algorithm)
         self.__game_view: GameView = GameView(surface, (game_model, []))
         self._robot_animator: RobotAnimator = RobotAnimator(surface, self.__game_view.maze_view, self.__game_view)
+        self.__results = None
 
     def run(self):
 
@@ -114,33 +112,38 @@ class GameController(Controller):
                     quit()
 
             keys = pygame.key.get_pressed()
-            if len(self._moves) > 0 and keys[pygame.K_BACKSPACE]:
-                self._moves.pop()
-            if keys[pygame.K_ESCAPE]:
-                break
-            elif len(self._moves) < self._game_model.no_moves:
-                if keys[pygame.K_UP] or (pygame.mouse.get_pos()[0] > self.__game_view.buttons[0][0] and pygame.mouse.get_pos()[0] < self.__game_view.buttons[0][0] + BUTTON_WIDTH and pygame.mouse.get_pressed()[0]):
-                    self._moves.append(Direction.UP)
-                elif keys[pygame.K_DOWN]:
-                    self._moves.append(Direction.DOWN)
-                elif keys[pygame.K_LEFT]:
-                    self._moves.append(Direction.LEFT)
-                elif keys[pygame.K_RIGHT]:
-                    self._moves.append(Direction.RIGHT)
-            elif keys[pygame.K_RETURN] and len(self._moves) == self._game_model.no_moves:
-                self.simulate()
-            else:
-                continue
-
-            self.__game_view.update((self._game_model, self._moves))
+            key_vals = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_BACKSPACE, pygame.K_RETURN, pygame.K_ESCAPE, pygame.K_t]
+            directions = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT]
+            for i in range(8):
+                if keys[key_vals[i]] or (self.__game_view.mouse_in_button(i) and pygame.mouse.get_pressed()[0]):
+                    if i < 4 and len(self._moves) < self._game_model.no_moves:
+                        self._moves.append(directions[i])
+                        self.__game_view.update((self._game_model, self._moves))
+                    if i == 4 and len(self._moves) > 0:
+                        self._moves.pop()
+                    if i == 5 and len(self._moves) == self._game_model.no_moves:
+                        self.simulate()
+                    if i == 6:
+                        return
 
             if self._game_model.victory:
                 self.game_win()
+                break
+
 
     def game_win(self):
         self.__game_view.draw_win()
         pygame.display.update()
         super().game_win()
+
+    def tips(self):
+        index = 0
+        if self.__results is None:
+            self.__results: AlgorithmStats = self._algorithm(self._game_model)
+        for i in range(len(self._moves)):
+            if self._moves[i] != self.__results.solution_state.moves[i]:
+                print("TIP")
+
                 
 
 

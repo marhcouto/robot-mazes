@@ -158,9 +158,12 @@ class GameModel:
     def maze(self):
         return self.__maze
 
-    def game_won(self):
-        self.__victory = True
-
     @property
     def victory(self):
         return self.__victory
+
+    def toggle_won(self):
+        if self.__victory:
+            self.__victory = False
+        else:
+            self.__victory = True

@@ -1,7 +1,7 @@
 import pygame_menu
-import pygame
 
 from menu.maze_selector_menu import MazeSelectorMenu
+from view.view_const import THEME
 
 
 class MainMenu:
@@ -9,9 +9,10 @@ class MainMenu:
         self.__main_menu = pygame_menu.Menu(
             height=window_size[1],
             width=window_size[0],
-            title='Robot Mazes',
-            theme=pygame_menu.themes.THEME_DARK
+            title='',
+            theme=THEME
         )
+        self.__main_menu.add.image('./src/assets/img/robot_image.png', scale=(0.5, 0.5))
         self.__main_menu.add.button('Choose Map', MazeSelectorMenu(window_size).maze_selector_menu)
         self.__main_menu.add.button('Quit', pygame_menu.events.EXIT)
 

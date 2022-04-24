@@ -1,8 +1,8 @@
 import pygame
 
-from view.game_view import GameView, View, MazeView
-from view.view_utils import SQUARE_WIDTH
-from model.game_model import Maze, Position, Direction
+from view.game_view import View
+from view.view_const import SQUARE_WIDTH, ROBOT
+from model.game_model import Position, Direction
 
 
 class Animator:
@@ -30,7 +30,7 @@ class RobotAnimator(Animator):
             elif direction == Direction.RIGHT:
                 current_pos = (current_pos[0] + self._frames_per_move, current_pos[1])
             self._general_view.draw_static()
-            self._surface.blit(self._animated_view.robot, current_pos)
+            self._surface.blit(ROBOT, current_pos)
             pygame.time.delay(self._frames_per_move * 1)
             pygame.display.update()
 
@@ -49,7 +49,7 @@ class RobotAnimator(Animator):
             elif direction == Direction.RIGHT:
                 current_pos = (current_pos[0] + self._frames_per_move, current_pos[1])
             self._general_view.draw_static()
-            self._surface.blit(self._animated_view.robot, current_pos)
+            self._surface.blit(ROBOT, current_pos)
             pygame.time.delay(self._frames_per_move * 1)
             pygame.display.update()
 
@@ -63,7 +63,7 @@ class RobotAnimator(Animator):
             elif direction == Direction.RIGHT:
                 current_pos = (current_pos[0] - self._frames_per_move, current_pos[1])
             self._general_view.draw_static()
-            self._surface.blit(self._animated_view.robot, current_pos)
+            self._surface.blit(ROBOT, current_pos)
             pygame.time.delay(self._frames_per_move * 1)
             pygame.display.update()
 
@@ -78,6 +78,6 @@ class RobotAnimator(Animator):
     #         elif direction == Direction.RIGHT:
     #             current_pos = (current_pos[0] + self._frames_per_move, current_pos[1])
     #         self._general_view.draw_static()
-    #         self._surface.blit(self._animated_view.robot, current_pos)
+    #         self._surface.blit(ROBOT, current_pos)
     #         pygame.time.delay(self._frames_per_move * 10)
     #         pygame.display.update()
