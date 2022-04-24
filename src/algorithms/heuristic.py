@@ -22,7 +22,7 @@ def manhattan_distance(game_model, state):
 def manhattan_distance_div_dist(game_model, state):
     if (not game_model in __shortest_path_cache):
         __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
-    return (len(__shortest_path_cache[game_model]) - manhattan_distance(game_model, state)) / len(__shortest_path_cache[game_model])
+    return manhattan_distance(game_model, state) / len(__shortest_path_cache[game_model])
 
 
 def generate_neighbour_positions(maze, cur_robot_pos):
@@ -74,3 +74,13 @@ def shortest_path_heuristic(game_model, state):
         if position in loop_path:
             common_positions.add(position)
     return len(shortest_path) - len(common_positions)
+
+def greatest_axis_distance(game_model, state):
+    final_pos = game_model.simulate(state.moves)[1][-1:][0]
+    return max(abs(final_pos.row - game_model.maze.final_robot_pos.row), abs(final_pos.column - game_model.maze.final_robot_pos.column))
+
+def greatest_axis_distance_div_dist(game_model, state):
+    final_pos = game_model.simulate(state.moves)[1][-1:][0]
+    if (not game_model in __shortest_path_cache):
+        __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
+    return max(abs(final_pos.row - game_model.maze.final_robot_pos.row), abs(final_pos.column - game_model.maze.final_robot_pos.column)) / len(__shortest_path_cache[game_model])

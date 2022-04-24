@@ -40,7 +40,11 @@ class MazeSelectorMenu:
             ('Greedy(Manhattan/Distance)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.manhattan_distance_div_dist)),
             ('A*(Manhattan/Distance)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.manhattan_distance_div_dist)),
             ('Greedy(Shortest Path)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.shortest_path_heuristic)),
-            ('A*(Shortest Path)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.shortest_path_heuristic))
+            ('A*(Shortest Path)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.shortest_path_heuristic)),
+            ('Greedy(MaxDist)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.greatest_axis_distance)),
+            ('A*(MaxDist)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.greatest_axis_distance)),
+            ('Greedy(MaxDist/Distance)', lambda game_state: algorithms.algorithms.greedy_search(game_state, algorithms.heuristic.greatest_axis_distance_div_dist)),
+            ('A*(MaxDist/Distance)', lambda game_state: algorithms.algorithms.a_star_search(game_state, algorithms.heuristic.greatest_axis_distance_div_dist))
         ]
         self.__cur_maze = 0
         self.__cur_algorithm = 0

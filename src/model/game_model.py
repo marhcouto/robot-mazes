@@ -143,7 +143,6 @@ class GameModel:
                     robot_pos = robot_pos.move(direction)
                     robot_path.append(robot_pos)
                 if robot_pos == self.__maze.final_robot_pos:
-                    print('Found Solution in simulate')
                     return True, robot_path
             if init_cycle_pos == robot_pos:
                 return False, robot_path

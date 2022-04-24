@@ -145,6 +145,7 @@ LEVEL_13 = GameModel(
 )
 
 IMPOSSIBLE_LEVEL = GameModel(
+    1000,
     Maze(
         5,
         Position(4, 0),
