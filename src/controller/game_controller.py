@@ -141,14 +141,20 @@ class GameController(Controller):
         super().game_win()
 
     def tips(self):
-        # index = 0
-        # if self.__results is None:
-        #     self.__results: AlgorithmStats = self._algorithm(self._game_model)
-        # for i in range(len(self._moves)):
-        #     if self._moves[i] != self.__results.solution_state.moves[i]:
-        #         print('TIPS')
-        #         self.__game_view.tips()
-        self.__game_view.tips("Brother from another mother")
+        index = 1
+        wrong = False
+        if self.__results is None:
+            self.__results: AlgorithmStats = self._algorithm(self._game_model)
+        for i in range(len(self._moves)):
+            if self._moves[i] != self.__results.solution_state.moves[i]:
+                wrong = True
+            index = i + 1
+        if wrong:
+            self.__game_view.tips("Change the direction number {}".format(index))
+        elif len(self._moves) != self._game_model.no_moves:
+            self.__game_view.tips("Add more moves")
+        else:
+            self.__game_view.tips("You might have done it")
         pygame.display.update()
         while True:
             for event in pygame.event.get():
