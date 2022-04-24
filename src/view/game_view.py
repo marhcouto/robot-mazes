@@ -75,11 +75,19 @@ class MazeView(View):
         for position1, positions in self.model.walls.items():
             for position2 in positions:
                 # Horizontal wall
-                if position1.column == position2.column:    
+                if position1.column == position2.column:
+                    if (position2.row < position1.row):
+                        temp = position1
+                        position1 = position2
+                        position2 = temp
                     pygame.draw.line(self._surface, wall.color, (position1.column * SQUARE_WIDTH + self.__left, position2.row * SQUARE_WIDTH + MazeView.TOP),
                         ((position1.column + 1) * SQUARE_WIDTH + self.__left, position2.row * SQUARE_WIDTH + MazeView.TOP), wall.width)
                 # Vertical wall
                 else:
+                    if (position2.column < position1.column):
+                        temp = position1
+                        position1 = position2
+                        position2 = temp
                     pygame.draw.line(self._surface, wall.color, (position2.column * SQUARE_WIDTH + self.__left, (position1.row + 1) * SQUARE_WIDTH + MazeView.TOP),
                         (position2.column * SQUARE_WIDTH + self.__left, position1.row * SQUARE_WIDTH + MazeView.TOP), wall.width)
 

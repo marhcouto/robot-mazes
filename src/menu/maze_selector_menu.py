@@ -3,7 +3,7 @@ import pygame_menu
 
 import algorithms.algorithms
 import algorithms.heuristic
-from model.sample_mazes import IMPOSSIBLE_LEVEL, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, SAMPLE_LEVEL, LEVEL_13
+from model.sample_mazes import IMPOSSIBLE_LEVEL, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, LEVEL_11, LEVEL_12, SAMPLE_LEVEL, LEVEL_13
 from view.game_view import MazeView
 from view.view_const import BACKGROUND, SURFACE, THEME
 from controller.game_controller import GameController, IAController
@@ -28,6 +28,13 @@ class MazeSelectorMenu:
             ('Level 3', LEVEL_3),
             ('Level 4', LEVEL_4),
             ('Level 5', LEVEL_5),
+            ('Level 6', LEVEL_6),
+            ('Level 7', LEVEL_7),
+            ('Level 8', LEVEL_8),
+            ('Level 9', LEVEL_9),
+            ('Level 10', LEVEL_10),
+            ('Level 11', LEVEL_11),
+            ('Level 12', LEVEL_12),
             ('Level 13', LEVEL_13),
             ('Impossible level', IMPOSSIBLE_LEVEL)
         ]

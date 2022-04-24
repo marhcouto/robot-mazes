@@ -34,7 +34,6 @@ def generate_neighbour_positions(maze, cur_robot_pos):
 
 
 def __maze_bfs(maze):
-    print("Called shortest path")
     q = Queue()
     s = set()
     starting_pos = MazeBFSState(maze.init_robot_pos, None)
@@ -44,7 +43,6 @@ def __maze_bfs(maze):
 
     while not q.empty():
         cur_pos = q.get()
-        print(cur_pos.position)
         if cur_pos.position == maze.final_robot_pos:
             break
 

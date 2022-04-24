@@ -28,7 +28,6 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
         nodes_explored += 1
 
         cur_state = q.get()
-
         if game_model.simulate(cur_state.moves)[0]:
             break
 
@@ -37,7 +36,6 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
             if not (child in s):
                 s.add(child)
                 q.put(child)
-
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
     return AlgorithmStats(time, nodes_explored, cur_state)

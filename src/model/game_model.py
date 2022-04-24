@@ -136,7 +136,7 @@ class GameModel:
     def simulate(self, moves):
         robot_pos = self.__maze.init_robot_pos
         robot_path = [robot_pos]
-        while True:
+        for _ in range(1000):
             init_cycle_pos = deepcopy(robot_pos)
             for direction in moves:
                 if self.__maze.can_move(robot_pos, direction):
@@ -146,6 +146,8 @@ class GameModel:
                     return True, robot_path
             if init_cycle_pos == robot_pos:
                 return False, robot_path
+        print("Done 1000 loops and didn't reach the end maybe caugh on an hard to detect loop")
+        return False, robot_path
 
     @property
     def id(self):
