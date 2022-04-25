@@ -43,6 +43,7 @@ All code is in src folder.
 - **model -** aspects related the data of the game
 - **controller -** aspects related to the execution of the game and simulation
 - **benchmark -** code related to performance analysis
+- **test -** code related to testing
 
 
 # How to play
