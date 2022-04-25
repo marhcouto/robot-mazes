@@ -38,6 +38,8 @@ class MazeSelectorMenu:
             ('Level 13', LEVEL_13),
             ('Impossible level', IMPOSSIBLE_LEVEL)
         ]
+        #Each algorithm expects a game_state
+        #Because greedy and a* need heuristics we use a lambda to curry a 2 argument function that expects a game_model and heuristic into a single argument function that only expects the game_model
         self.__algorithms = [
             ('Breadth-First Search', algorithms.algorithms.breadth_first_search),
             ('Depth-First Search', algorithms.algorithms.depth_first_search),
