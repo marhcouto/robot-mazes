@@ -33,6 +33,18 @@ Alternatively, you can just run the executables for windows and linux present in
 ./robot_mazes_linux
 ```
 
+# Project Structure
+
+All code is in src folder.
+
+- **algorithms -** everything related to AI
+- **menu -** everything related to the menus of the game
+- **view -** aspects related to the graphics of the game
+- **model -** aspects related the data of the game
+- **controller -** aspects related to the execution of the game and simulation
+- **benchmark -** code related to performance analysis
+
+
 # How to play
 
 ## Main Menu
