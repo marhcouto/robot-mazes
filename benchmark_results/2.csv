@@ -1,14 +1,14 @@
-Algorithm;Execution Time;Iterations;Solution Depth
-Breadth First Search;28.76;143;4
-Depth First Search;19.64;92;92
-Iterative Deepening DFS;52.58;379;4
-Greedy(Manhattan);11.25;8;5
-A*(Manhattan);16.02;12;5
-Greedy(Manhattan/Shortest Distance);9.04;8;5
-A*(Manhattan/Shortest Distance);38.53;68;4
-Greedy(Shortest Path);41.03;40;9
-A*(Shortest Path);36.38;48;5
-Greedy(Maximum Axis Distance);9.86;8;5
-A*(Maximum Axis Distance);15.06;16;5
-Greedy(Maximum Axis Distance/Maze Size);9.26;8;5
-A*(Maximum Axis Distance/Maze Size);35.50;68;4
+Algorithm,Execution Time,Iterations,Solution Depth
+bfs,27.48,143,4
+dfs,20.15,92,92
+iddfs,48.43,379,4
+greedy_manhattan,11.96,8,5
+a_star_manhattan,20.44,12,5
+greedy_manhattan_div_distance,9.42,8,5
+a_star_manhattan_div_distance,34.51,68,4
+greedy_shortest_path,40.98,40,9
+a_star_shortest_path,37.71,48,5
+greedy_max_dist,9.64,8,5
+a_star_max_dist,16.89,16,5
+greedy_max_dist_div_distance,9.02,8,5
+a_star_max_dist_div_distance,36.15,68,4

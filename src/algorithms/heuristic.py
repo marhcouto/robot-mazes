@@ -26,9 +26,7 @@ def manhattan_distance(game_model, state):
 def manhattan_distance_div_dist(game_model, state):
     if (not game_model in __shortest_path_cache):
         __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
-    return manhattan_distance(game_model, state) / len(__shortest_path_cache[game_model])
-
-[1, 2, 3, 4, 5, 6]
+    return manhattan_distance(game_model, state) / (2 * game_model.maze.size)
 
 def generate_neighbour_positions(maze, cur_robot_pos):
     neigh = []
