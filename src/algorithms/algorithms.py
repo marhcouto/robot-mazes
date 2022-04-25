@@ -7,9 +7,12 @@ from algorithms.algorithm_stats import AlgorithmStats
 from algorithms.heap import Heap
 from model.game_model import GameModel
 
-
+# Simple breadth first search algorithm
+# Each state is inserted in a FIFO
+# Each state in the FIFO popped from the state queue and visited in that order until we find the solution
 def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     q = Queue()
+    #This set is used to avoid cycles
     s = set()
     nodes_explored = 0
     starting_state = State.initial_state(game_model.no_moves)
@@ -40,7 +43,9 @@ def breadth_first_search(game_model: GameModel) -> AlgorithmStats:
     time: float = (end_time - start_time) / 1000000
     return AlgorithmStats(time, nodes_explored, cur_state)
 
-
+# Simple depth first search algorithm
+# Each state is inserted in a LIFO
+# Each state in the LIFO popped from the state stack and visited in that order until we find the solution
 def depth_first_search(game_model: GameModel, max_depth=math.inf) -> AlgorithmStats:
     q = LifoQueue()
     s = set()
@@ -74,7 +79,8 @@ def depth_first_search(game_model: GameModel, max_depth=math.inf) -> AlgorithmSt
     time: float = (end_time - start_time) / 1000000
     return AlgorithmStats(time, nodes_explored, cur_state)
 
-
+# Iterative deepening depth first search algorithm
+# We start with a maximum depth of 0 and increase it by one until we can find the solution using DFS
 def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
     depth = 0
 
@@ -94,7 +100,8 @@ def iterative_deepening_search(game_model: GameModel) -> AlgorithmStats:
     time: float = (end_time - start_time) / 1000000
     return AlgorithmStats(time, nodes_explored, found)
 
-
+# Each node is inserted in a heap that orders the items according to the heuristic
+# Then we pop a state from the queue insert it's children in the queue and repeat this process until we find a solution
 def greedy_search(game_model: GameModel, heuristic):
 
     nodes_explored: int = 0
@@ -123,7 +130,9 @@ def greedy_search(game_model: GameModel, heuristic):
     time: float = (end_time - start_time) / 1000000
     return AlgorithmStats(time, nodes_explored, current_state)
 
-
+# A* Algorithm
+# We use a heap like in greedy algorithm but this time the value of each state in the queue is it's depth plus the value of the given heuristic 
+# Then we pop a state from the queue insert it's children in the queue and repeat this process until we find a solution
 def a_star_search(game_model: GameModel, heuristic):
     visited_states = set()
     node_queue = Heap(lambda state: heuristic(game_model, state))

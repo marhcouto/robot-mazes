@@ -1,7 +1,9 @@
 from model.game_model import Direction
 from queue import Queue
 
+
 __shortest_path_cache = {}
+
 
 class MazeBFSState:
     def __init__(self, position, parent):
@@ -14,9 +16,11 @@ class MazeBFSState:
     def __eq__(self, __o):
         return self.position == __o.position
 
+
 def force_shortest_path_cache(game_model):
     if (not game_model in __shortest_path_cache):
         __shortest_path_cache[game_model] = __maze_bfs(game_model.maze)
+
 
 def manhattan_distance(game_model, state):
     final_pos = game_model.simulate(state.moves)[1][-1:][0]
@@ -50,6 +54,7 @@ def __maze_bfs(maze):
             break
 
         children = generate_neighbour_positions(maze, cur_pos.position)
+        #Creates MazeBFSState from simple Position objects 
         children = [child for child in map(lambda child_pos: MazeBFSState(child_pos, cur_pos), children)]
         for child in children:
             if not (child in s):
@@ -76,9 +81,11 @@ def shortest_path_heuristic(game_model, state):
             common_positions.add(position)
     return len(shortest_path) - len(common_positions)
 
+
 def greatest_axis_distance(game_model, state):
     final_pos = game_model.simulate(state.moves)[1][-1:][0]
     return max(abs(final_pos.row - game_model.maze.final_robot_pos.row), abs(final_pos.column - game_model.maze.final_robot_pos.column))
+
 
 def greatest_axis_distance_div_dist(game_model, state):
     final_pos = game_model.simulate(state.moves)[1][-1:][0]
