@@ -1,12 +1,12 @@
 # Robot Mazes
 
-Just a simple python program to solve the problem proposed by Erich Friedman
-[Robot Mazes](https://erich-friedman.github.io/puzzle/robot/)
+Just a simple python program to implement the game proposed by Erich Friedman
+[Robot Mazes](https://erich-friedman.github.io/puzzle/robot/) and AI capable of solving it.
 
 # Dependencies
 The project was done using Python 3.8.13
 
-Additionally to execute the program the following dependencies need to be installed in a python environment
+Additionally, to execute the program via python script, the following dependencies need to be installed in a python environment.
 ```
 pygame == 2.1.2
 pygame-menu == 4.2.7
@@ -18,6 +18,20 @@ pip install -r requirements.txt
 
 # Execution
 To play the game simply run the script main.py that is located inside src from the root of the project.
+```
+python3 src/main.py
+```
+
+Alternatively, you can just run the executables for windows and linux present in the root folder.
+### Windows terminal:
+```
+./robot_mazes_win.exe
+```
+
+### Linux bash:
+```
+./robot_mazes_linux
+```
 
 # How to play
 
