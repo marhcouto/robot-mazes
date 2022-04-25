@@ -39,12 +39,8 @@ def benchmark():
             f.write('Algorithm,Execution Time,Iterations,Solution Depth\n')
             for algorithm in __algorithms:
                 total_exec_time = 0
-                total_iter = 0
-                total_depth = 0
                 for _ in range(__n_sample):
                     algorithm_stats = algorithm[1](maze)
                     solution_depth = len(algorithm_stats.solution_history)
                     total_exec_time += algorithm_stats.time
-                    total_iter += algorithm_stats.iterations
-                    total_depth += solution_depth
-                f.write('{0},{1},{2},{3}\n'.format(algorithm[0], total_exec_time/__n_sample, total_iter/__n_sample, total_depth/__n_sample))
+                f.write('{0},{1:.2f},{2},{3}\n'.format(algorithm[0], total_exec_time/__n_sample, algorithm_stats.iterations, solution_depth))

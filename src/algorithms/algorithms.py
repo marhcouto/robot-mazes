@@ -125,10 +125,11 @@ def greedy_search(game_model: GameModel, heuristic):
 
 
 def a_star_search(game_model: GameModel, heuristic):
-    visited_nodes = {}
+    visited_states = set()
     node_queue = Heap(lambda state: heuristic(game_model, state))
-    node_queue.insert(State.initial_state(game_model.no_moves))
-    visited_nodes[State.initial_state(game_model.no_moves)] = heuristic(game_model, State.initial_state(game_model.no_moves))
+    initial_state = State.initial_state(game_model.no_moves)
+    node_queue.insert_with_custom_value(initial_state.depth + heuristic(game_model, initial_state), initial_state)
+    visited_states.add(initial_state)
     cur_node: State
     iter_num = 0
 
@@ -141,9 +142,10 @@ def a_star_search(game_model: GameModel, heuristic):
             break
         next_nodes = cur_node.generate_all_children()
         for node in next_nodes:
-            if node not in visited_nodes:
-                node_queue.insert_with_custom_value(visited_nodes[cur_node] + heuristic(game_model, node), node)
-                visited_nodes[node] = heuristic(game_model, node) if not (node.parent in visited_nodes) else visited_nodes[node.parent] + heuristic(game_model, node)
+            if node not in visited_states:
+                a_star_val = node.depth + heuristic(game_model, node)
+                node_queue.insert_with_custom_value(a_star_val, node)
+                visited_states.add(node)
 
     end_time: int = perf_counter_ns()
     time: float = (end_time - start_time) / 1000000
