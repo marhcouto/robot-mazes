@@ -1,7 +1,7 @@
 # Robot Mazes
 
 Just a simple python program to solve the problem proposed by Erich Friedman
-![Robot Mazes](https://erich-friedman.github.io/puzzle/robot/)
+[Robot Mazes](https://erich-friedman.github.io/puzzle/robot/)
 
 # Dependencies
 The project was done using Python 3.8.13
@@ -18,3 +18,21 @@ pip install -r requirements.txt
 
 # Execution
 To play the game simply run the script main.py that is located inside src from the root of the project.
+
+# How to play
+
+## Main Menu
+In the main menu the user can change the selected option with the arrow keys and select the menu using enter 
+![](img/main_menu.png)
+
+## Choose A Maze
+In this menu the user can change the selected option with arrow up and arrow down, change the maze using arrow left and arrow right. Finally the user can open the algorithm dropdown with enter and select the multiple algorithms using the arrow keys and enter. 
+![](img/choose_a_maze.png)
+
+## Simulate
+This menu allows the user to see the result of the algorithm selected applied to a certain maze. An animation of the robot is shown along with some statistics
+![](img/simulate.gif)
+
+## Play
+This menu allows the user to play the game. The user might choose movements by using the arrow keys, start a simultaion with enter, erase movements with backspace and ask for tips by clicking the light bulb.
+![](img/play.gif)
