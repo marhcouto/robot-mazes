@@ -37,16 +37,16 @@ Alternatively, you can just run the executables for windows and linux present in
 
 ## Main Menu
 In the main menu the user can change the selected option with the arrow keys and select the menu using enter 
-![](img/main_menu.png)
+![](Readme/img/main_menu.png)
 
 ## Choose A Maze
 In this menu the user can change the selected option with arrow up and arrow down, change the maze using arrow left and arrow right. Finally the user can open the algorithm dropdown with enter and select the multiple algorithms using the arrow keys and enter. 
-![](img/choose_a_maze.png)
+![](Readme/img/choose_a_maze.png)
 
 ## Simulate
 This menu allows the user to see the result of the algorithm selected applied to a certain maze. An animation of the robot is shown along with some statistics
-![](img/simulate.gif)
+![](Readme/img/simulate.gif)
 
 ## Play
 This menu allows the user to play the game. The user might choose movements by using the arrow keys, start a simultaion with enter, erase movements with backspace and ask for tips by clicking the light bulb.
-![](img/play.gif)
+![](Readme/img/play.gif)
