@@ -18,10 +18,10 @@
         \begin{enumerate}
             \item Simulate the current solution
             \item Calculate Manhattan Distance from where the robot got stuck to the goal
-            \item \textbf{Evaluation functions:} given $f$ the function that gives the Manhattan Distance, $S$ the state and $SP$ the shortest path
+            \item \textbf{Evaluation functions:} given $f$ the function that gives the Manhattan Distance, $S$ the state and $M$ the maze
             \begin{itemize}
-                \item $f(S)$ - non admissible
-                \item $f(S) / SP.size$ - admissible
+                \item \textbf{MAN1 - } $f(S)$ - non admissible
+                \item \textbf{MAN2 - } $f(S) / (M.size \times 2)$ - admissible
             \end{itemize}
         \end{enumerate}
     \end{itemize}
@@ -32,19 +32,19 @@
 \begin{frame}{Approach}
     \textbf{Heuristics}
     \begin{itemize}
-        \item \textbf{Max Distance}
+        \item \textbf{Maximum Axis Distance}
         \begin{enumerate}
             \item Simulate the current solution
-            \item Calculate Max Distance from where the robot got stuck to the goal ($max(distx_, dist_y)$)
-            \item \textbf{Evaluation functions:} given $f$ the function that gives the Max Distance, $S$ the state and $M$ the maze
+            \item Calculate Maximum Axis Distance from where the robot got stuck to the goal ($max(distx_, dist_y)$)
+            \item \textbf{Evaluation functions:} given $f$ the function that gives the Maximum Axis Distance, $S$ the state and $M$ the maze
             \begin{itemize}
-                \item $f(S)$ - non admissible
-                \item $f(S) / M.size$ - admissible
+                \item \textbf{MAD1 - } $f(S)$ - non admissible
+                \item \textbf{MAD2 - } $f(S) / M.size$ - admissible
             \end{itemize}
         \end{enumerate}
     \end{itemize}
     
-    \textbf{Note:} The way we approached and interpreted the problem lead to a non-existance in comparison of solutions, as there is a fixed number of movements for each problem. For this matter, we chose to compare each solution simply through the speed of its attainance. Therefore, and because the closest solution to the root is not the only valid one, non admissible heuristics are acceptable. 
+    The way we approached and interpreted the problem lead to a non-existance in comparison of solutions, as there is a fixed number of movements for each problem. For this matter, we chose to compare each solution simply through the speed of its attainance. Therefore, and because the closest solution to the root is not the only valid one, non admissible heuristics are acceptable. 
     
 \end{frame}
 

@@ -1,50 +1,30 @@
-\begin{frame}{Results(Level 2)}
-    \scalebox{0.8}{
+\begin{frame}{Results}
+    \begin{center}
+    \scalebox{0.7}{
         \begin{table}[]
             \centering
-            \begin{tabular}{|l|l|l|l|}
+            \begin{tabular}{|l|l|l|l|l|l|l|l|}
             \hline
-            \textbf{Algorithm} & \textbf{Execution Time} & \textbf{Iterations} & \textbf{Solution Depth} \\ \hline
-            Breadth First Search & 28.76 & 143 & 4 \\ \hline
-            Depth First Search & 19.64 & 92 & 92 \\ \hline
-            Iterative Deepening DFS & 52.58 & 379 & 4 \\ \hline
-            Greedy(Manhattan) & 11.25 & 8 & 5 \\ \hline
-            A*(Manhattan) & 16.02 & 12 & 5 \\ \hline
-            Greedy(Manhattan/Shortest Distance) & 9.04 & 8 & 5 \\ \hline
-            A*(Manhattan/Shortest Distance) & 38.53 & 68 & 4 \\ \hline
-            Greedy(Shortest Path) & 41.03 & 40 & 9 \\ \hline
-            A*(Shortest Path) & 36.38 & 48 & 5 \\ \hline
-            Greedy(Maximum Axis Distance) & 9.86 & 8 & 5 \\ \hline
-            A*(Maximum Axis Distance) & 15.06 & 16 & 5 \\ \hline
-            Greedy(Maximum Axis Distance/Maze Size) & 9.26 & 8 & 5 \\ \hline
-            A*(Maximum Axis Distance/Maze Size) & 35.50 & 68 & 4 \\ \hline
+            & & \multicolumn{3}{l|}{\textbf{Maze 2 (4 moves)}} & \multicolumn{3}{l|}{\textbf{Maze 8 (6 moves)}} \\ \hline
+            \textbf{Algorithm} & \textbf{Heuristics} & \textbf{Time (ms)} & \textbf{Iterations} & \textbf{Depth} & \textbf{Time (ms)} & \textbf{Iterations} & \textbf{Depth} \\ \hline
+            BFS & - & 27.48 & 143 & 4 & 937.86 & 3992 & 7 \\ \hline
+            DFS & - & 20.15 & 92 & 92 & 585.51 & 1868 & 1868\\ \hline
+            IDS & - & 48.43 & 379 & 4 & 11006.86 & 80064 & 9 \\ \hline
+            A* & MAN1 & 20.44 & 12 & 5 & 79.09 & 44 & 8 \\ \hline
+            %Greedy & Manhattan - admissible & 9.04 & 8 & 5 \\ \hline
+            A* & MAN2 & 38.53 & 68 & 4 & 34.51 & 68 & 4 \\ \hline
+            A* & Shortest Path & 36.38 & 48 & 5 & 37.71 & 48 & 5 \\ \hline
+            A* & MAD1 & 15.06 & 16 & 5 & 16.89 & 16 & 5\\ \hline
+            % Greedy(Maximum Axis Distance/Maze Size) & 9.26 & 8 & 5 \\ \hline
+            A* & MAD2 & 35.50 & 68 & 4  & 36.15 & 68 & 4\\ \hline
+            Greedy & MAN1 & 11.96 & 8 & 5 & 43.38 & 21 & 10 \\ \hline
+            Greedy & Shortest Path & 41.03 & 40 & 9 & 40.98 & 40 & 9\\ \hline
+            Greedy & MAD1 & 9.86 & 8 & 5 & 9.02 & 8 & 5\\ \hline
             \end{tabular}
         \end{table}
     }
+    \end{center}
+    \textbf{Note:} Greedy algorithm was not worth running with admissible heuristics; Heuristics names are defined in the slides before.
 \end{frame}
 
 
-\begin{frame}{Results(Level 8)}
-    \scalebox{0.8}{
-        \begin{table}[]
-            \begin{tabular}{|l|l|l|l|}
-            \hline
-            \textbf{Algorithm} & \textbf{Execution Time} & \textbf{Iterations} & \textbf{Solution Depth} \\ \hline
-            Breadth First Search & 972.04 & 3992 & 7 \\ \hline
-            Depth First Search & 515.58 & 1868 & 1868 \\ \hline
-            Iterative Deepening DFS & 10790.95 & 80064 & 9 \\ \hline
-            Greedy(Manhattan) & 43.48 & 21 & 10 \\ \hline
-            A*(Manhattan) & 75.63 & 44 & 8 \\ \hline
-            Greedy(Manhattan/Shortest Distance) & 41.60 & 21 & 10 \\ \hline
-            A*(Manhattan/Shortest Distance) & 1308.32 & 3368 & 7 \\ \hline
-            Greedy(Shortest Path) & 38.89 & 17 & 8 \\ \hline
-            A*(Shortest Path) & 234.00 & 144 & 9 \\ \hline
-            Greedy(Maximum Axis Distance) & 75.57 & 39 & 12 \\ \hline
-            A*(Maximum Axis Distance) & 423.44 & 602 & 8 \\ \hline
-            Greedy(Maximum Axis Distance/Maze Size) & 76.28 & 39 & 12 \\ \hline
-            A*(Maximum Axis Distance/Maze Size) & 1246.24 & 3368 & 7 \\ \hline
-            \end{tabular}
-        \end{table}
-    }
-    
-\end{frame}
