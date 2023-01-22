@@ -1,4 +1,5 @@
 # Robot Mazes
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Just a simple python program to implement the game proposed by Erich Friedman
 [Robot Mazes](https://erich-friedman.github.io/puzzle/robot/) and AI capable of solving it.
