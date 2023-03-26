@@ -104,10 +104,16 @@ class MovesView(View):
 
         self._build()
 
-        moves_string = 'Moves: {}'.format(self.model[1])
+        moves_string_1 = 'Moves:'
+        moves_string_2 = '{}'.format(self.model[1])
 
-        text = pygame.font.Font(None, 48).render(moves_string, True, COLOR, BACKGROUND)
-        self._surface.blit(text, (30, 10))
+        font_underlined = pygame.font.Font(None, 48)
+        font_underlined.set_underline(True)
+
+        text1 = font_underlined.render(moves_string_1, True, COLOR, BACKGROUND)
+        text2 = pygame.font.Font(None, 48).render(moves_string_2, True, COLOR, BACKGROUND)
+        self._surface.blit(text1, (30, 10))
+        self._surface.blit(text2, (150, 10))
    
         x = 20
         y = 50
@@ -139,12 +145,16 @@ class StatsView(View):
 
         if self.model is None:
             return
+        
+
+        font_underlined = pygame.font.Font(None, 32)
+        font_underlined.set_underline(True)
 
         data = [
-            "Execution Time: {0} ms".format(self.model.time),
-            "Iterations: {0}".format(self.model.iterations),
-            "Solution Depth: {0}".format(len(self.model.solution_history)),
-            "Found Solution: {0}".format(self.__render_solution())
+            ("Execution Time:", " {0} ms".format(self.model.time)),
+            ("Iterations:", " {0}".format(self.model.iterations)),
+            ("Solution Depth:", " {0}".format(len(self.model.solution_history))),
+            ("Found Solution:", " {0}".format(self.__render_solution()))
         ]
 
         text = pygame.font.Font(None, 48).render("Algorithm Stats:", True, COLOR, BACKGROUND)
@@ -152,8 +162,10 @@ class StatsView(View):
 
         y = 240
         for sentence in data:
-            text = pygame.font.Font(None, 32).render(sentence, True, COLOR, BACKGROUND)
-            self._surface.blit(text, (30, y))
+            text1 = font_underlined.render(sentence[0], True, COLOR, BACKGROUND)
+            text2 = pygame.font.Font(None, 32).render(sentence[1], True, COLOR, BACKGROUND)
+            self._surface.blit(text1, (30, y))
+            self._surface.blit(text2, (14*len(sentence[0]), y))
             y += 30
 
     def __render_solution(self):
@@ -198,7 +210,10 @@ class GameView(View):
 
     def draw_win(self):
         surface_w, _ = self._surface.get_size()
-        text = pygame.font.Font(None, 64).render("Maze Complete!", True, RED, COLOR)
+        font = pygame.font.Font(None, 80)
+        font.set_underline(True)
+        font.set_bold(True)
+        text = font.render("Maze Complete!", True, COLOR, BACKGROUND)
         self._surface.blit(text, ((surface_w - text.get_size()[0]) // 2, 200))
 
     def draw_buttons(self):
@@ -231,13 +246,13 @@ class GameView(View):
 
     def instructions(self):
         text = []
-        text.append(pygame.font.Font(None, 30).render(" - Arrow keys or buttons to", True, COLOR, BACKGROUND))
-        text.append(pygame.font.Font(None, 30).render("choose directions.", True, COLOR, BACKGROUND))
-        text.append(pygame.font.Font(None, 30).render(" - Backspace or button to", True, COLOR, BACKGROUND))
-        text.append(pygame.font.Font(None, 30).render("remove them.", True, COLOR, BACKGROUND))
-        text.append(pygame.font.Font(None, 30).render(" - Enter or button to make", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render(" - Arrow keys or arrow buttons", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render("to choose directions.", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render(" - Backspace or backspace button", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render("to remove them.", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render(" - Enter or enter button to make", True, COLOR, BACKGROUND))
         text.append(pygame.font.Font(None, 30).render("the robot cycle.", True, COLOR, BACKGROUND))
-        text.append(pygame.font.Font(None, 30).render(" - Escape or button to exit", True, COLOR, BACKGROUND))
+        text.append(pygame.font.Font(None, 30).render(" - Escape or escape button to exit", True, COLOR, BACKGROUND))
         text.append(pygame.font.Font(None, 30).render("to menu.", True, COLOR, BACKGROUND))
         text.append(pygame.font.Font(None, 30).render(" - I or lightbulb button for tips.", True, COLOR, BACKGROUND))
         y = 105
@@ -248,9 +263,6 @@ class GameView(View):
         
         pygame.draw.rect(self._surface, COLOR, pygame.Rect(820, 100, 350, 300), width=2, border_radius=10)
 
-
-
-        
 
 
 class IAView(View):

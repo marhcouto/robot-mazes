@@ -142,29 +142,28 @@ class GameController(Controller):
         super().game_win()
 
     def tips(self):
-        index = 1
         wrong = False
         if self.__results is None:
             self.__results: AlgorithmStats = self._algorithm(self._game_model)
+        i = 0
         for i in range(len(self._moves)):
             if self._moves[i] != self.__results.solution_state.moves[i]:
                 wrong = True
                 break
-            index = i + 1
+        index = i + 1
         if wrong:
-            self.__game_view.tips("Change the direction number {}".format(index))
+            self.__game_view.tips(" Change the direction number {} ".format(index))
         elif len(self._moves) != self._game_model.no_moves:
-            self.__game_view.tips("Add more moves")
+            self.__game_view.tips(" Add more moves ")
         else:
-            self.__game_view.tips("You might have done it")
+            self.__game_view.tips(" You might have done it! ")
         pygame.display.update()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_ESCAPE] or keys[pygame.K_BACKSPACE] or keys[pygame.K_RETURN]:
-                return
+                if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    return      
 
     def instructions(self):
         self.__game_view.instructions()
@@ -173,10 +172,6 @@ class GameController(Controller):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_ESCAPE] or keys[pygame.K_BACKSPACE] or keys[pygame.K_RETURN]:
-                return
-
-                
-
+                if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    return
 
